@@ -1,0 +1,75 @@
+# Dependencies installed by npm (keep package.json and package-lock.json)
+node_modules/
+
+# Generated builds, test reports, and tool caches
+dist/
+dist-ssr/
+build/
+coverage/
+.nyc_output/
+.vite/
+.cache/
+.turbo/
+*.tsbuildinfo
+
+# Logs and local process files
+logs/
+*.log
+*.pid
+*.pid.lock
+
+# Environment values and machine-specific configuration
+.env
+.env.*
+*.local
+# Templates must contain placeholder values only
+!.env.example
+!.env.*.example
+!.env.sample
+!.env.*.sample
+
+# Local secrets and private key material
+secrets/
+*.key
+*.p12
+*.pfx
+*.keystore
+id_rsa
+id_ed25519
+
+# Local runtime data and backups (root directories only)
+/data/
+/backups/
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Generated CodeGraph index, reproducible from source
+.codegraph/
+
+# Personal editor state; allow selected team configuration
+.idea/
+**/.vscode/*
+!**/.vscode/extensions.json
+!**/.vscode/tasks.json
+!**/.vscode/launch.json
+*.code-workspace
+*.suo
+*.user
+
+# OS metadata and temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+/tmp/
+/temp/
