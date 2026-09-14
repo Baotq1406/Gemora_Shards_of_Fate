@@ -1,6 +1,6 @@
 # Hiểu cấu trúc và các file setup của Gemora
 
-> Tài liệu dành cho giai đoạn vừa làm vừa học, cập nhật theo các file thực tế ngày 08/09/2026.
+> Tài liệu dành cho giai đoạn vừa làm vừa học; phần setup được ghi nhận ngày 08/09/2026, bổ sung liên kết PRD ngày 14/09/2026.
 > Các ví dụ gameplay bên dưới chỉ dùng để giải thích vị trí của code, chưa được triển khai.
 
 ## 1. Bạn đang có gì?
@@ -18,7 +18,7 @@ Hiện trạng cụ thể:
 | Admin dashboard | Manifest, README và file code trống | Giao diện quản trị, framework, xác thực |
 | Shared types | Manifest và file code trống | Kiểu dữ liệu dùng chung, cấu hình xuất package |
 | Game core | Manifest và file code trống | Luật game, cấu hình xuất package |
-| Tài liệu | README, hướng dẫn này | Nội dung GDD; file GDD hiện trống |
+| Tài liệu | README, hướng dẫn này, PRD | Nội dung GDD; file GDD hiện trống |
 
 Chưa cài dependencies của game hoặc chạy thử. Tại thời điểm cập nhật chưa có
 `node_modules/`, `package-lock.json` hay `.git/`.
@@ -95,6 +95,7 @@ Gemora_Shards_of_Fate/
 │
 └── docs/
     ├── GDD.md                    # Trống
+    ├── PRD.md                    # Đặc tả sản phẩm và phạm vi MVP
     └── PROJECT_STRUCTURE.md      # Tài liệu bạn đang đọc
 ```
 
@@ -607,6 +608,13 @@ Tên file không tự làm điều này; chúng ta vẫn cần viết exports v�
 Hiện cả hai file index đều trống.
 
 ## 6. docs/ — ghi lại điều mình định xây và lý do
+
+### PRD.md
+
+PRD xác định mục tiêu sản phẩm, phạm vi MVP, quy tắc gameplay, yêu cầu hệ thống
+và tiêu chí nghiệm thu. Đây là thiết kế dự kiến; xem [PRD](PRD.md) trước khi
+chia việc triển khai. Các mô tả về code hiện có trong tài liệu này vẫn phản ánh
+trạng thái setup ở thời điểm được ghi nhận, không có nghĩa PRD đã được triển khai.
 
 ### GDD.md
 

@@ -6,6 +6,9 @@ sẽ được phát triển dựa trên GDD.
 Để vừa làm vừa học, đọc [hướng dẫn chi tiết cấu trúc và các file setup](docs/PROJECT_STRUCTURE.md).
 Tài liệu giải thích từng file hiện có, các công cụ của client và ranh giới giữa các workspace.
 
+[PRD của Gemora](docs/PRD.md) xác định mục tiêu, gameplay, phạm vi MVP,
+yêu cầu hệ thống và tiêu chí nghiệm thu. Đây là đặc tả dự kiến, chưa phải các tính năng đã triển khai.
+
 CodeGraph đã được khởi tạo và lập chỉ mục mã nguồn hiện tại. Thư mục `.codegraph/`
 là dữ liệu sinh tự động, đã được bỏ qua trong Git. Quy tắc ignore dùng chung nằm
 ở `.gitignore` gốc; mã nguồn, assets, tài liệu và lockfile vẫn được giữ để chia sẻ.
@@ -21,6 +24,7 @@ Gemora_Shards_of_Fate/
 │   └── game-core/        # src/index.ts trống
 ├── docs/
 │   ├── GDD.md            # Chỗ đặt GDD sau này
+│   ├── PRD.md            # Đặc tả sản phẩm và phạm vi MVP
 │   └── PROJECT_STRUCTURE.md # Hướng dẫn cấu trúc và setup
 ├── .editorconfig
 ├── .gitignore
