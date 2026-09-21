@@ -2,6 +2,11 @@
   "name": "gemora-shards-of-fate",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "dev:game": "npm run dev -w @gemora/game-client",
+    "dev:admin": "npm run dev -w @gemora/admin-dashboard",
+    "build:ui": "npm run build -w @gemora/game-client && npm run build -w @gemora/admin-dashboard"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"

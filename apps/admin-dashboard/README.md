@@ -1,7 +1,11 @@
-# Admin dashboard
+# Gemora Admin Dashboard
 
-Workspace dự phòng với `src/main.ts` trống, chưa có ứng dụng chạy. Chọn framework và xây màn hình sau
-khi GDD xác định nhu cầu vận hành (người chơi, nội dung, hỗ trợ, sự kiện…).
+Prototype giao diện quản trị dùng React, TypeScript và dữ liệu mẫu. Các thao tác
+tìm kiếm, lọc, xem chi tiết, khóa/mở người chơi và sửa Hero/Màn chơi chỉ thay đổi
+dữ liệu trong bộ nhớ; tải lại trang sẽ khôi phục fixture ban đầu.
 
-Dashboard gọi API có xác thực và phân quyền ở server; không kết nối trực tiếp
-database từ trình duyệt. Không đặt secrets trong code frontend.
+```powershell
+npm run dev -w @gemora/admin-dashboard
+```
+
+Dashboard chưa kết nối API, database, đăng nhập hoặc phân quyền thật.
