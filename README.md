@@ -6,6 +6,14 @@ game, popup xác thực và Admin Dashboard; gameplay và backend vẫn đang �
 Để vừa làm vừa học, đọc [hướng dẫn chi tiết cấu trúc và các file setup](docs/PROJECT_STRUCTURE.md).
 Tài liệu giải thích từng file hiện có, các công cụ của client và ranh giới giữa các workspace.
 
+[Hướng dẫn PostgreSQL và Prisma](docs/POSTGRESQL_PRISMA_GUIDE.md) giải thích vai trò
+của database/ORM và cách cài trên Windows, cấu hình backend, tạo migration, seed
+và kiểm tra kết nối. Các bước là hướng dẫn thực hành, chưa được triển khai vào backend.
+
+[Bộ sơ đồ thiết kế MVP](docs/diagrams/index.html) gồm kiến trúc, ERD, luồng chơi,
+lượt chiến đấu, trao đổi client–server và nâng hero; nền trắng, chữ/đường nối đen.
+Mỗi sơ đồ có bản SVG, PNG và [ghi chú thiết kế](docs/diagrams/README.md).
+
 [PRD của Gemora](docs/PRD.md) xác định mục tiêu, gameplay, phạm vi MVP,
 yêu cầu hệ thống và tiêu chí nghiệm thu. Đây là đặc tả dự kiến, chưa phải các tính năng đã triển khai.
 

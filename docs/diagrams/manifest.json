@@ -1,0 +1,98 @@
+[
+  {
+    "id": "01-system-architecture",
+    "title": "Kiến trúc tổng thể",
+    "subtitle": "Client trình bày • Backend quyết định • PostgreSQL lưu dữ liệu",
+    "notes": [
+      "Mũi tên hai chiều: trao đổi dữ liệu. Nét đứt: phụ thuộc hỗ trợ.",
+      "MVP PvE dùng REST. Game client và Admin không kết nối trực tiếp database.",
+      "Prisma nằm ở backend; game-core không chứa HTTP, ORM hay renderer."
+    ]
+  },
+  {
+    "id": "02-erd-player",
+    "title": "ERD — Tài khoản, hero và đội hình",
+    "subtitle": "Mỗi người chơi có một profile, một đội MVP và một kho",
+    "notes": [
+      "PK: khóa chính; FK: khóa ngoại; UQ: duy nhất. 1 : 0..N là một bản ghi có thể có nhiều bản ghi con.",
+      "Quan hệ 1:1 là trạng thái nghiệp vụ sau khởi tạo; backend tạo User/Profile/Inventory/Team trong transaction. Đội được lưu hợp lệ phải có đúng 3 hero cùng chủ và một leader.",
+      "UQ: PlayerHero(playerId, heroCode); TeamMember(teamId, playerHeroId). Số 3 và điều kiện cùng chủ cần kiểm tra ở backend.",
+      "HeroCatalog giữ định danh qua các phiên bản. HP/energy đang dùng thuộc Battle, không thuộc PlayerHero."
+    ]
+  },
+  {
+    "id": "03-erd-content",
+    "title": "ERD — Nội dung game có phiên bản",
+    "subtitle": "Định danh ổn định cho tiến trình • Bản phát hành cố định cho từng trận",
+    "notes": [
+      "UQ: (releaseId, heroCode), (releaseId, skill code), (releaseId, enemy code), (releaseId, stageId).",
+      "Mũi nối thể hiện quan hệ cấu trúc. Khi publish cần kiểm tra đủ hero/skill/enemy/reward, tham chiếu cùng release và prerequisite không có vòng lặp.",
+      "Reward bundle là JSONB có schema; server kiểm tra item/hero code. RewardDefinition kế thừa release qua StageVersion.",
+      "Nội dung đã publish không sửa trực tiếp. Trận mới chụp snapshot; thay nội dung không sửa trận đang chạy."
+    ]
+  },
+  {
+    "id": "04-erd-battle",
+    "title": "ERD — Trận đấu, tiến trình và phần thưởng",
+    "subtitle": "Lưu từng hành động • Cấp thưởng một lần • Giữ lịch sử biến động",
+    "notes": [
+      "FK playerId của RewardGrant/CurrencyLedger được ghi trong bảng; lược bớt đường nối về Profile để dễ đọc. Profile có 0..N grant và ledger.",
+      "BattleAction: UQ(battleId, clientActionId) và UQ(battleId, sequence). OperationReceipt: UQ(playerId, operationType, requestId).",
+      "grantKey thưởng thường gắn battleId; first-clear gắn playerId + stageId. Mỗi player có tối đa một Battle CREATED/ACTIVE.",
+      "AdminAuditLog (phụ trợ, không vẽ): id, actorId → User, action, target, before/after, requestId, createdAt. Google AuthIdentity ngoài phạm vi MVP này."
+    ]
+  },
+  {
+    "id": "05-player-game-flow",
+    "title": "Luồng chơi tổng thể",
+    "subtitle": "Vòng chơi MVP: chọn đội → vượt màn → nhận thưởng → nâng hero",
+    "notes": [
+      "Đội/màn không hợp lệ: báo lỗi và giữ nguyên dữ liệu. Đăng nhập thất bại: ở lại form để thử lại.",
+      "Mất mạng hoặc tải lại trang không đồng nghĩa bỏ trận. Abandon chỉ xảy ra khi người chơi xác nhận.",
+      "Thưởng được server cấp khi chốt WON. Màn Result chỉ đọc kết quả, không cấp thưởng lần nữa."
+    ]
+  },
+  {
+    "id": "06-battle-turn-flow",
+    "title": "Một lượt chiến đấu PvE",
+    "subtitle": "Server tính luật • Client phát animation từ event trả về",
+    "notes": [
+      "Từ chối action sai phase, hero chết, thiếu energy, còn cooldown hoặc target sai; action lỗi không đổi state.",
+      "Kiểm tra terminal ngay khi effect có thể kết thúc trận; không buộc swap hay cho địch đã chết phản công. Mũi skill → WON diễn đạt quy tắc này.",
+      "Hết HP đội hoặc chạm giới hạn lượt → LOST; địch chết do status có thể → WON. Cần chốt thứ tự ưu tiên nếu hai phe cùng chết trong một tick.",
+      "Vượt safety cap cascade: báo lỗi và rollback action, không cấp thưởng. Bỏ trận có xác nhận → ABANDONED (xem sơ đồ trạng thái)."
+    ]
+  },
+  {
+    "id": "07-action-sequence",
+    "title": "Trao đổi khi người chơi thực hiện một hành động",
+    "subtitle": "Gửi ý định → tính kết quả → lưu nguyên tử → phát animation",
+    "notes": [
+      "Auth và ownership luôn được kiểm tra trước khi trả lại response của action cũ.",
+      "Transaction không gọi dịch vụ mạng ngoài. Kiểm soát cạnh tranh bằng khóa hoặc cập nhật có điều kiện và unique constraints.",
+      "First-clear dùng khóa player + stage; clear thường dùng battle. Không cấp thưởng trong GET result."
+    ]
+  },
+  {
+    "id": "08-battle-state",
+    "title": "Vòng đời một trận đấu",
+    "subtitle": "Kết quả terminal không nhận thêm hành động gameplay",
+    "notes": [
+      "Tạo và kích hoạt có thể nằm trong cùng transaction; lỗi khởi tạo rollback, không để CREATED mồ côi.",
+      "Tải lại hoặc mất mạng: vẫn ACTIVE; resume từ state đã commit. Action sai không tạo chuyển trạng thái.",
+      "Trận kết thúc chỉ đọc result/replay. Bấm chơi lại tạo battleId mới; không đưa WON/LOST về ACTIVE.",
+      "Tối đa một Battle CREATED/ACTIVE trên mỗi player; chống start trùng bằng requestId và ràng buộc database."
+    ]
+  },
+  {
+    "id": "09-hero-upgrade-flow",
+    "title": "Luồng nâng hero và bảo vệ tài nguyên",
+    "subtitle": "Một yêu cầu → một lần nâng → một kết quả đã lưu",
+    "notes": [
+      "Nếu mất response sau commit, client gửi lại cùng requestId; không tạo ID mới cho lần retry.",
+      "Receipt kiểm tra lại dưới khóa để hai request trùng đồng thời không nâng hai lần; nếu tìm thấy thì trả kết quả cũ.",
+      "Expected level/quote version đã đổi: yêu cầu xác nhận lại. Quyền sở hữu sai hoặc auth lỗi: dừng trước transaction.",
+      "Nâng hero không sửa snapshot của trận đã bắt đầu. Luồng này là thiết kế, chưa phải API đã triển khai."
+    ]
+  }
+]

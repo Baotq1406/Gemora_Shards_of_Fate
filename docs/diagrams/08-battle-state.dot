@@ -1,0 +1,17 @@
+digraph Gemora {
+graph [bgcolor="white", pad="0.35", nodesep="0.5", ranksep="0.7", splines=polyline, rankdir=TB, fontname="Arial", fontsize=17, color="black"];
+node [shape=box, style=filled, fillcolor="white", color="black", fontcolor="black", fontname="Arial", fontsize=17, penwidth=1.4, margin="0.18,0.12"];
+edge [color="black", fontcolor="black", fontname="Arial", fontsize=14, penwidth=1.25, arrowsize=0.7];
+
+request [label="Yêu cầu bắt đầu\nAccount + đội + stage hợp lệ" shape=oval];
+created [label="CREATED\nGhi snapshot / content / engine version" ];
+active [label="ACTIVE\nState + sequence + action log" ];
+won [label="WON\nThắng, cấp thưởng" shape=doublecircle];
+lost [label="LOST\nThua, không thưởng" shape=doublecircle];
+abandoned [label="ABANDONED\nBỏ trận, không thưởng" shape=doublecircle];
+request -> created; created -> active [label="Khởi tạo thành công"];
+active -> active [label="Action hợp lệ → sequence + 1"];
+active -> won [label="Hạ toàn bộ địch"]; active -> lost [label="Hết HP đội / giới hạn lượt"]; active -> abandoned [label="Xác nhận bỏ trận"];
+{rank=same; won; lost; abandoned;}
+
+}

@@ -1,0 +1,22 @@
+digraph Gemora {
+graph [bgcolor="white", pad="0.35", nodesep="0.5", ranksep="0.7", splines=polyline, rankdir=TB, fontname="Arial", fontsize=17, color="black"];
+node [shape=box, style=filled, fillcolor="white", color="black", fontcolor="black", fontname="Arial", fontsize=17, penwidth=1.4, margin="0.18,0.12"];
+edge [color="black", fontcolor="black", fontname="Arial", fontsize=14, penwidth=1.25, arrowsize=0.7];
+
+game [label="GAME CLIENT\nVite + TypeScript + PixiJS\nInput • HUD • animation" ];
+admin [label="ADMIN DASHBOARD\nReact + TypeScript\nBảng • form • publish" ];
+{rank=same; game; admin;}
+api [label="GAME SERVER — NestJS\nAuth / Profile / Hero / Team / Stage\nBattle / Reward / Inventory / Admin" ];
+core [label="GAME-CORE\nBoard • combat • AI • seeded RNG\nLogic thuần, không truy cập DB" ];
+prisma [label="PRISMA\nTruy vấn • transaction\nSchema + migrations" ];
+db [label="POSTGRESQL\nTài khoản • hero • tiến trình\nBattle snapshot • action • ledger" shape=cylinder];
+types [label="SHARED-TYPES\nDTO / action / event công khai" ];
+assets [label="STATIC ASSETS\nẢnh • âm thanh • atlas" ];
+game -> api [label="HTTPS / REST", dir=both]; admin -> api [label="HTTPS / Admin API", dir=both];
+api -> core [label="Tính kết quả", dir=both]; api -> prisma [label="Đọc / ghi", dir=both]; prisma -> db [label="SQL", dir=both];
+{rank=same; core; prisma;}
+{rank=same; types; assets;}
+types -> game [style=dashed]; types -> api [style=dashed, constraint=false]; types -> admin [style=dashed];
+assets -> game [style=dashed];
+
+}

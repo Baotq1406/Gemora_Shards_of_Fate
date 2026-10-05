@@ -1,0 +1,26 @@
+digraph Gemora {
+graph [bgcolor="white", pad="0.35", nodesep="0.5", ranksep="0.7", splines=polyline, rankdir=TB, fontname="Arial", fontsize=17, color="black"];
+node [shape=box, style=filled, fillcolor="white", color="black", fontcolor="black", fontname="Arial", fontsize=17, penwidth=1.4, margin="0.18,0.12"];
+edge [color="black", fontcolor="black", fontname="Arial", fontsize=14, penwidth=1.25, arrowsize=0.7];
+
+boot [label="Mở game\nTải tài nguyên + kiểm tra phiên" shape=oval];
+auth [label="Phiên hợp lệ?" shape=diamond];
+login [label="Đăng nhập / Đăng ký\nTài khoản mới nhận roster khởi đầu" ];
+home [label="HOME\nProfile • Gold • tiến trình" ];
+team [label="Hero / Đội hình\nChọn 3 hero + 1 leader" ];
+campaign [label="Campaign\nChọn màn đã mở" ];
+resume [label="Tiếp tục trận đang dở\nTải state đã lưu" ];
+start [label="Server kiểm tra đội + màn\nTạo battle và snapshot" ];
+battle [label="BATTLE\nSkill → swap → combat → enemy" ];
+result [label="Kết quả?" shape=diamond];
+win [label="WON\nServer cấp thưởng + cập nhật sao/mở màn" ];
+loss [label="LOST / ABANDONED\nKhông nhận thưởng trong MVP" ];
+screen [label="RESULT\nHiện kết quả đã chốt" ];
+upgrade [label="Kho / Nâng hero\nXem giá → xác nhận → cập nhật" ];
+boot -> auth; auth -> home [label="Có"]; auth -> login [label="Không"]; login -> home [label="Xác thực thành công"];
+home -> team; team -> campaign [label="Lưu đội hợp lệ"]; home -> campaign [label="Dùng đội đã lưu"]; home -> resume [label="Có trận đang dở"];
+campaign -> start; start -> battle [label="Hợp lệ"]; start -> campaign [label="Chưa đủ điều kiện", constraint=false]; resume -> battle;
+battle -> result; result -> win [label="Thắng"]; result -> loss [label="Thua / bỏ trận"]; win -> screen; loss -> screen;
+screen -> upgrade [label="Có tài nguyên"]; screen -> home [label="Về Home", constraint=false]; upgrade -> home [label="Chuẩn bị trận tiếp theo", constraint=false];
+
+}

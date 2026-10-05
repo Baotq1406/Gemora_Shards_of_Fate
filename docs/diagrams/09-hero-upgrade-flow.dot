@@ -1,0 +1,26 @@
+digraph Gemora {
+graph [bgcolor="white", pad="0.35", nodesep="0.5", ranksep="0.7", splines=polyline, rankdir=TB, fontname="Arial", fontsize=17, color="black"];
+node [shape=box, style=filled, fillcolor="white", color="black", fontcolor="black", fontname="Arial", fontsize=17, penwidth=1.4, margin="0.18,0.12"];
+edge [color="black", fontcolor="black", fontname="Arial", fontsize=14, penwidth=1.25, arrowsize=0.7];
+
+ui [label="Client xem giá và chỉ số mới\nNgười chơi xác nhận nâng" shape=oval];
+request [label="Gửi heroId + requestId\nexpectedLevel / quoteVersion" ];
+auth [label="Server xác thực + ownership\nĐọc receipt theo requestId" ];
+retry [label="Đã xử lý cùng yêu cầu?" shape=diamond];
+old [label="Trả kết quả đã lưu\nCùng ID khác payload: báo lỗi" ];
+subgraph cluster_tx { label="MỘT DATABASE TRANSACTION"; color=black; style=dashed;
+lock [label="Khóa Profile → Hero → Item\nKiểm tra lại receipt" ];
+again [label="Receipt đã có sau khi khóa?" shape=diamond];
+check [label="Đủ tài nguyên, đúng giá/level\nvà chưa chạm cap?" shape=diamond];
+change [label="Trừ Gold / material có điều kiện\nTăng level hero" ];
+persist [label="Ghi CurrencyLedger + OperationReceipt" ];
+commit [label="COMMIT" ];
+lock -> again; again -> check [label="Chưa"]; check -> change [label="Có"]; change -> persist; persist -> commit;
+}
+fail [label="ROLLBACK / trả lỗi\nGiữ nguyên level và tài nguyên" ];
+done [label="Client cập nhật hero + Gold + kho\nTrận sau dùng chỉ số mới" shape=oval];
+ui -> request; request -> auth; auth -> retry; retry -> old [label="Có"]; retry -> lock [label="Chưa"];
+again -> old [label="Có: kết thúc transaction đọc"];
+check -> fail [label="Không"]; persist -> fail [label="Lỗi ghi", style=dashed]; commit -> done; old -> done [label="Nếu payload khớp"];
+
+}

@@ -1,0 +1,25 @@
+digraph Gemora {
+graph [bgcolor="white", pad="0.35", nodesep="0.5", ranksep="0.7", splines=polyline, rankdir=TB, fontname="Arial", fontsize=17, color="black"];
+node [shape=box, style=filled, fillcolor="white", color="black", fontcolor="black", fontname="Arial", fontsize=17, penwidth=1.4, margin="0.18,0.12"];
+edge [color="black", fontcolor="black", fontname="Arial", fontsize=14, penwidth=1.25, arrowsize=0.7];
+
+begin [label="Bắt đầu player turn\nPLAYER_SKILL: giảm cooldown" shape=oval];
+skills [label="Chọn focus / dùng 0–3 skill\nTối đa một lần mỗi hero sống" ];
+skillwin [label="Địch đã bị hạ hết?" shape=diamond];
+swap [label="PLAYER_SWAP\nChọn hai gem kề nhau" ];
+valid [label="Swap hợp lệ?" shape=diamond];
+resolve [label="RESOLVE\nMatch → special → gravity/refill\nCascade → Resonance → energy" ];
+attack [label="Hero còn sống basic attack\nTheo Speed, bỏ qua target đã chết" ];
+woncheck [label="Toàn bộ địch hết HP?" shape=diamond];
+enemy [label="ENEMY\nĐịch sống hành động theo Speed" ];
+tick [label="Tick status\nKiểm tra điều kiện kết thúc" ];
+terminal [label="Có kết quả terminal?" shape=diamond];
+next [label="Sang player turn kế tiếp" ];
+won [label="WON\nChốt thưởng một lần" shape=oval];
+end [label="WON / LOST\nChốt theo kết quả engine" shape=oval];
+begin -> skills; skills -> skillwin; skillwin -> won [label="Có"]; skillwin -> swap [label="Không / bỏ qua skill"];
+swap -> valid; valid -> swap [label="Không: không tiêu lượt", constraint=false]; valid -> resolve [label="Có"];
+resolve -> attack; attack -> woncheck; woncheck -> won [label="Có"]; woncheck -> enemy [label="Không"];
+enemy -> tick; tick -> terminal; terminal -> end [label="Có"]; terminal -> next [label="Không"]; next -> begin [label="Lặp", constraint=false];
+
+}
