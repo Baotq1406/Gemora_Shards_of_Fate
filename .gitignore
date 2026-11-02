@@ -1,5 +1,6 @@
 # Dependencies installed by npm (keep package.json and package-lock.json)
 node_modules/
+apps/game-server/src/generated/
 
 # Generated builds, test reports, and tool caches
 dist/

@@ -3,6 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev:server": "npm run dev -w @gemora/game-server",
+    "build:server": "npm run build -w @gemora/game-server",
+    "start:server": "npm run start -w @gemora/game-server",
+    "typecheck:server": "npm run typecheck -w @gemora/game-server",
+    "db:validate": "npm run db:validate -w @gemora/game-server",
+    "db:generate": "npm run db:generate -w @gemora/game-server",
+    "db:migrate:create": "npm run db:migrate:create -w @gemora/game-server --",
+    "db:migrate:dev": "npm run db:migrate:dev -w @gemora/game-server",
+    "db:migrate:apply": "npm run db:migrate:apply -w @gemora/game-server",
+    "db:status": "npm run db:status -w @gemora/game-server",
+    "db:check": "npm run db:check -w @gemora/game-server",
+    "test:db": "npm run test:db -w @gemora/game-server",
     "dev:game": "npm run dev -w @gemora/game-client",
     "dev:admin": "npm run dev -w @gemora/admin-dashboard",
     "build:ui": "npm run build -w @gemora/game-client && npm run build -w @gemora/admin-dashboard"

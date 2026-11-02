@@ -1,0 +1,54 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  PLAYER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  LOCKED
+}
+
+model User {
+  id              String         @id @default(uuid()) @db.Uuid
+  normalizedEmail String         @unique @db.VarChar(254)
+  passwordHash    String         @db.Text
+  role            UserRole       @default(PLAYER)
+  status          UserStatus     @default(ACTIVE)
+  createdAt       DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime       @updatedAt @db.Timestamptz(3)
+  profile         PlayerProfile?
+  sessions        AuthSession[]
+}
+
+model PlayerProfile {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @unique @db.Uuid
+  displayName String   @db.VarChar(50)
+  createdAt   DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AuthSession {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  tokenHash String    @unique @db.VarChar(64)
+  expiresAt DateTime  @db.Timestamptz(3)
+  revokedAt DateTime? @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}

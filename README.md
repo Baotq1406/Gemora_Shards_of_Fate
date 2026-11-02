@@ -1,14 +1,21 @@
 # Gemora: Shards of Fate
 
 Monorepo cho Gemora: Shards of Fate. Hiện dự án đã có prototype UI cho màn chào
-game, popup xác thực và Admin Dashboard; gameplay và backend vẫn đang ở giai đoạn thiết kế.
+game, popup xác thực và Admin Dashboard. Backend đã có nền NestJS/Prisma và migration
+tài khoản; API đăng ký/đăng nhập và gameplay chưa triển khai.
+
+[Hướng dẫn chạy backend và đồng bộ database](apps/game-server/README.md) là hướng dẫn
+áp dụng cho mã hiện tại: tạo database local, cấu hình .env, chạy migration và kiểm tra kết nối.
+
+**Cập nhật 02/11/2026:** Đã xoá asset và bản triển khai bàn cờ cũ để thiết kế lại từ đầu.
 
 Để vừa làm vừa học, đọc [hướng dẫn chi tiết cấu trúc và các file setup](docs/PROJECT_STRUCTURE.md).
 Tài liệu giải thích từng file hiện có, các công cụ của client và ranh giới giữa các workspace.
 
 [Hướng dẫn PostgreSQL và Prisma](docs/POSTGRESQL_PRISMA_GUIDE.md) giải thích vai trò
 của database/ORM và cách cài trên Windows, cấu hình backend, tạo migration, seed
-và kiểm tra kết nối. Các bước là hướng dẫn thực hành, chưa được triển khai vào backend.
+và kiểm tra kết nối. Đây là bài học tham khảo; schema và lệnh chạy thực tế nằm trong
+hướng dẫn backend phía trên.
 
 [Bộ sơ đồ thiết kế MVP](docs/diagrams/index.html) gồm kiến trúc, ERD, luồng chơi,
 lượt chiến đấu, trao đổi client–server và nâng hero; nền trắng, chữ/đường nối đen.
@@ -32,7 +39,7 @@ là dữ liệu sinh tự động, đã được bỏ qua trong Git. Quy tắc i
 Gemora_Shards_of_Fate/
 ├── apps/
 │   ├── game-client/       # Landing game và popup xác thực; giữ PixiJS cho gameplay sau
-│   ├── game-server/       # src/index.ts trống
+│   ├── game-server/       # NestJS, Prisma, migration auth và health API
 │   └── admin-dashboard/   # React dashboard với dữ liệu mẫu
 ├── packages/
 │   ├── shared-types/     # src/index.ts trống

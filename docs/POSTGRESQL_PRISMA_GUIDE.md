@@ -1,5 +1,9 @@
 # PostgreSQL + Prisma: giải thích và hướng dẫn cài đặt cho Gemora
 
+> Cập nhật 02/11/2026: nền backend và migration auth đã được triển khai. Để chạy mã
+> hiện tại, dùng [hướng dẫn backend](../apps/game-server/README.md). Các ví dụ ItemDefinition,
+> seed và tsconfig bên dưới là bài học riêng, không ghi đè schema/config thực tế bằng các ví dụ đó.
+
 Ngày đối chiếu tài liệu: **05/10/2026**. Môi trường hướng dẫn: Windows, PowerShell, npm workspaces, TypeScript ESM.
 
 Đây là tài liệu học và cài đặt. Các file cấu hình, schema và script bên dưới là nội dung để tạo khi thực hành; chúng chưa được cài hoặc triển khai vào backend chỉ bằng việc thêm tài liệu này. Schema ví dụ là bước khởi đầu, chưa phải toàn bộ database MVP.

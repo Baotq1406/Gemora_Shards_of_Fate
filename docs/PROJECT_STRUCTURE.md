@@ -65,11 +65,7 @@ Gemora_Shards_of_Fate/
 │   │   │   ├── main.ts
 │   │   │   └── vite-env.d.ts
 │   │   └── public/
-│   │       ├── style.css
-│   │       ├── favicon.png
-│   │       └── assets/
-│   │           ├── bunny.png
-│   │           └── logo.svg
+│   │       └── style.css
 │   │
 │   ├── game-server/
 │   │   ├── package.json
@@ -284,7 +280,7 @@ Xem [dependency version ranges của npm](https://docs.npmjs.com/cli/v11/configu
 
 #### index.html — trang HTML bắt đầu của client
 
-File khai báo `lang="vi"`, metadata responsive/description, favicon, stylesheet,
+File khai báo `lang="vi"`, metadata responsive/description, stylesheet,
 `div#app` và entry `/src/main.ts`. Title hiện là “Gemora: Shards of Fate”.
 `type="module"` cho phép Vite xử lý TypeScript thành module chạy trong trình duyệt.
 
@@ -319,12 +315,8 @@ Xem [Vite public directory](https://v6.vite.dev/guide/assets#the-public-director
 | File hiện có              | URL tương ứng       | Đang được sử dụng ở đâu?                          |
 | ------------------------- | ------------------- | ------------------------------------------------- |
 | `public/style.css`        | `/style.css`        | `index.html`                                      |
-| `public/favicon.png`      | `/favicon.png`      | `index.html`                                      |
-| `public/assets/bunny.png` | `/assets/bunny.png` | Asset template cũ, chưa dùng trong UI mới         |
-| `public/assets/logo.svg`  | `/assets/logo.svg`  | Chưa được tham chiếu trong mã nguồn/HTML hiện tại |
 
-`assets/` chỉ là thư mục con chúng ta dùng để nhóm tài nguyên.
-`.png` lưu ảnh dạng điểm ảnh; `.svg` mô tả hình bằng dữ liệu vector.
+Asset cũ đã được xoá ngày 02/11/2026 để thiết kế lại.
 
 `style.css` chứa token màu, background fantasy, landing, popup/form, responsive
 breakpoint và giảm chuyển động theo `prefers-reduced-motion`.
@@ -708,6 +700,6 @@ Cơ chế này được mô tả trong [npm workspaces](https://docs.npmjs.com/c
 6. Đọc `eslint.config.mjs` để hiểu vì sao editor hoặc lint có thể báo lỗi.
 7. Khi có ý tưởng gameplay, dùng bảng phân trách nhiệm ở mục 7 để chọn nơi viết code.
 
-Một bài tập đọc code không cần chạy: giải thích vì sao URL ảnh thỏ là
-`/assets/bunny.png`, vì sao đổi ID trong HTML có thể làm demo lỗi,
+Một bài tập đọc code không cần chạy: giải thích vì sao URL stylesheet là
+`/style.css`, vì sao đổi ID trong HTML có thể làm demo lỗi,
 và vì sao file server trống chưa thể nhận kết nối từ client.
