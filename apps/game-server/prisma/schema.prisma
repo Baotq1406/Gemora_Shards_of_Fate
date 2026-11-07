@@ -19,16 +19,33 @@ enum UserStatus {
   LOCKED
 }
 
+enum AuthProvider {
+  GOOGLE
+}
+
 model User {
   id              String         @id @default(uuid()) @db.Uuid
   normalizedEmail String         @unique @db.VarChar(254)
-  passwordHash    String         @db.Text
+  passwordHash    String?        @db.Text
   role            UserRole       @default(PLAYER)
   status          UserStatus     @default(ACTIVE)
   createdAt       DateTime       @default(now()) @db.Timestamptz(3)
   updatedAt       DateTime       @updatedAt @db.Timestamptz(3)
   profile         PlayerProfile?
   sessions        AuthSession[]
+  identities      AuthIdentity[]
+}
+
+model AuthIdentity {
+  id              String       @id @default(uuid()) @db.Uuid
+  userId          String       @db.Uuid
+  provider        AuthProvider
+  providerSubject String       @db.Text
+  createdAt       DateTime     @default(now()) @db.Timestamptz(3)
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerSubject])
+  @@unique([userId, provider])
 }
 
 model PlayerProfile {

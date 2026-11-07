@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { PrismaService } from "./database/prisma.service.js";
+import { AuthModule } from "./auth/auth.module.js";
 import { HealthController } from "./health.controller.js";
 
-@Module({ controllers: [HealthController], providers: [PrismaService] })
+@Module({ imports: [AuthModule], controllers: [HealthController] })
 export class AppModule {}

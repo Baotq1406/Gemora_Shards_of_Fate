@@ -49,22 +49,13 @@ MVP phục vụ chuột/bàn phím trên Chrome và Edge desktop. Thao tác ch�
 
 ### 5.1. Vòng lặp 30 giây
 
-```text
-Quan sát board và trạng thái hai đội
-  → chọn mục tiêu / dùng skill đã sẵn sàng
-  → swap một cặp gem hợp lệ
-  → xem match, cascade, damage, energy và địch phản công
-  → đánh giá board mới và lặp lại
-```
+Người chơi quan sát bàn cờ và hai đội, chọn mục tiêu hoặc dùng skill đã sẵn sàng, rồi đổi chỗ một cặp gem hợp lệ. Sau match/cascade, sát thương, năng lượng và phản công của địch, người chơi đánh giá bàn cờ mới để tiếp tục.
 
 Kiểm tra thiết kế: trong 30 giây, người chơi phải thực hiện ít nhất một hành động, nhận phản hồi hình–âm rõ ràng, hiểu phần thưởng chiến thuật của hành động và có lý do để nghĩ về lượt tiếp theo.
 
 ### 5.2. Vòng lặp một phiên
 
-```text
-Đăng nhập → chọn đội → chọn ải → chiến đấu → nhận kết quả
-         → nhận tài nguyên → nâng hero / đổi đội → chọn ải tiếp theo
-```
+Trong một phiên chơi, người chơi đăng nhập, chọn đội và ải, chiến đấu rồi nhận kết quả/tài nguyên. Sau đó có thể nâng hero hoặc đổi đội trước khi chọn ải tiếp theo.
 
 ### 5.3. Vòng lặp dài hạn của MVP
 

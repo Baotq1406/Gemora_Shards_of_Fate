@@ -24,17 +24,7 @@ Ngày đối chiếu tài liệu: **05/10/2026**. Môi trường hướng dẫn:
 
 Luồng của Gemora:
 
-```text
-Game client / Admin dashboard
-             │ HTTPS: yêu cầu xem kho, bắt đầu trận, nâng hero
-             ▼
-Backend: xác thực → kiểm tra quyền → áp dụng luật game
-             │
-             ▼
-Prisma Client → PostgreSQL driver → PostgreSQL
-             │
-             └── Backend nhận dữ liệu → trả DTO công khai cho client
-```
+Game client và Admin dashboard gửi yêu cầu HTTPS tới backend. Backend xác thực, kiểm tra quyền và luật game, rồi dùng Prisma Client cùng PostgreSQL driver để truy cập database. Kết quả được ánh xạ thành DTO công khai trước khi trả về client.
 
 Ví dụ người chơi nhấn “Nâng hero”: client gửi hero ID và mã yêu cầu; backend tính giá, kiểm tra chủ sở hữu và tài nguyên; database lưu việc trừ tài nguyên và tăng level trong cùng giao dịch. Không nhận một số Gold mới do client tự tính rồi lưu thẳng.
 

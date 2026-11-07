@@ -590,37 +590,19 @@ hiện thực điều đó ra sao”; tài liệu cấu trúc này trả lời �
 
 ### 7.1. Luồng UI prototype hiện có
 
-```text
-game-client: index.html → main.ts → landing → auth modal → kết quả giả lập
-admin-dashboard: index.html → main.tsx → App.tsx → fixture/data + 5 trang quản trị
-```
+Game client khởi chạy từ index.html và main.ts, hiển thị landing, mở auth modal rồi trả kết quả giả lập. Admin dashboard khởi chạy từ index.html, main.tsx và App.tsx, sử dụng fixture/data cho năm trang quản trị.
 
 Hai frontend hiện chạy độc lập. Luồng này chưa gọi game server, shared-types hay game-core.
 
 ### 7.2. Luồng online dự kiến
 
-```text
-Người chơi
-   │ thao tác
-   ▼
-game-client ── yêu cầu qua mạng ──► game-server
-   ▲                                   │
-   └──────── trạng thái/kết quả ────────┘
-```
+Người chơi thao tác trên game-client. Client gửi yêu cầu qua mạng tới game-server và nhận trạng thái hoặc kết quả để cập nhật giao diện.
 
 Giao thức mạng và cách đồng bộ sẽ được chọn theo GDD.
 
 Hướng phụ thuộc code dự kiến:
 
-```text
-game-client ──────► shared-types
-       └─────────► game-core ──────► shared-types
-
-game-server ─────► shared-types
-       └─────────► game-core
-
-admin-dashboard ─► shared-types   (khi có kiểu dữ liệu cần dùng chung)
-```
+game-client và game-server có thể dùng shared-types cùng game-core; game-core dùng shared-types khi cần. admin-dashboard dùng shared-types khi có hợp đồng công khai cần chia sẻ.
 
 Mũi tên ở sơ đồ này là “dùng code/kiểu của”, không phải kết nối mạng.
 Các dependency này chưa được khai báo trong manifests hiện tại.

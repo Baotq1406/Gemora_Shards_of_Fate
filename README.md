@@ -2,10 +2,15 @@
 
 Monorepo cho Gemora: Shards of Fate. Hiện dự án đã có prototype UI cho màn chào
 game, popup xác thực và Admin Dashboard. Backend đã có nền NestJS/Prisma và migration
-tài khoản; API đăng ký/đăng nhập và gameplay chưa triển khai.
+tài khoản và API đăng ký/đăng nhập. Popup xác thực đang chờ kết nối API.
+
+[Hướng dẫn chạy API và cấu hình Google](docs/AUTH_SETUP.md) có các bước tạo OAuth client và thử đăng nhập trên localhost.
 
 [Hướng dẫn chạy backend và đồng bộ database](apps/game-server/README.md) là hướng dẫn
 áp dụng cho mã hiện tại: tạo database local, cấu hình .env, chạy migration và kiểm tra kết nối.
+
+[Kế hoạch đăng ký/đăng nhập email và Google](tasks/prd-player-auth-email-google.md)
+đặt phạm vi auth tiếp theo: hai cách đăng nhập, liên kết tài khoản và phiên độc lập trên Chrome/Brave.
 
 **Cập nhật 02/11/2026:** Đã xoá asset và bản triển khai bàn cờ cũ để thiết kế lại từ đầu.
 
@@ -17,9 +22,9 @@ của database/ORM và cách cài trên Windows, cấu hình backend, tạo migr
 và kiểm tra kết nối. Đây là bài học tham khảo; schema và lệnh chạy thực tế nằm trong
 hướng dẫn backend phía trên.
 
-[Bộ sơ đồ thiết kế MVP](docs/diagrams/index.html) gồm kiến trúc, ERD, luồng chơi,
-lượt chiến đấu, trao đổi client–server và nâng hero; nền trắng, chữ/đường nối đen.
-Mỗi sơ đồ có bản SVG, PNG và [ghi chú thiết kế](docs/diagrams/README.md).
+[Sơ đồ database hiện tại](docs/diagrams/index.html) thể hiện bốn bảng User,
+PlayerProfile, AuthSession và AuthIdentity. [Bản giải thích và đánh giá database](docs/DATABASE_REVIEW.md)
+mô tả từng trường, khóa và quan hệ. Bộ sơ đồ cũ đã được gỡ ngày 04/11/2026 để thiết kế lại.
 
 [PRD của Gemora](docs/PRD.md) xác định mục tiêu, gameplay, phạm vi MVP,
 yêu cầu hệ thống và tiêu chí nghiệm thu. Đây là đặc tả dự kiến, chưa phải các tính năng đã triển khai.

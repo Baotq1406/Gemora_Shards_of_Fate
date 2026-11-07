@@ -15,6 +15,7 @@
     "db:status": "npm run db:status -w @gemora/game-server",
     "db:check": "npm run db:check -w @gemora/game-server",
     "test:db": "npm run test:db -w @gemora/game-server",
+    "test:auth": "npm run test:auth -w @gemora/game-server",
     "dev:game": "npm run dev -w @gemora/game-client",
     "dev:admin": "npm run dev -w @gemora/admin-dashboard",
     "build:ui": "npm run build -w @gemora/game-client && npm run build -w @gemora/admin-dashboard"

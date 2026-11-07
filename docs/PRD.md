@@ -1,5 +1,9 @@
 # Product Requirements Document — Gemora: Shards of Fate
 
+> Phạm vi auth cập nhật 04/11/2026: dùng [PRD email + Google](../tasks/prd-player-auth-email-google.md)
+> cho đợt triển khai tiếp theo. Google là yêu cầu đợt đầu và dùng chung AuthSession/cookie;
+> các yêu cầu JWT/refresh cũ trong tài liệu tổng thể này được thay thế bởi PRD chuyên biệt đó.
+
 ## Mục lục
 
 1. [Thông tin tài liệu](#1-thông-tin-tài-liệu)
@@ -433,13 +437,7 @@ Password hash và token theo §26; không đưa secret vào repo, dùng env/secr
 
 ## 37. Kiến trúc tổng thể
 
-```text
-Browser (PixiJS client) ── HTTPS REST ──┐
-                                      ├── Nginx ── NestJS game server ── Prisma ── PostgreSQL
-Browser (React admin) ─── HTTPS REST ───┘                │
-                                      WebSocket (Phase 2) │
-                                                         └── Redis (Phase 2: queue/session, nếu cần)
-```
+Kiến trúc mục tiêu dùng trình duyệt cho PixiJS client và React admin, truy cập REST qua HTTPS/Nginx tới NestJS server. Backend dùng Prisma để truy cập PostgreSQL. WebSocket và Redis chỉ là lựa chọn ở Phase 2 khi cần queue/session.
 
 Client hiển thị input/animation và nhận state server; admin quản lý content version; server là nguồn sự thật cho battle, progression và reward; PostgreSQL lưu trạng thái bền vững. `game-core` được server gọi để resolve action; client có thể dùng bản thuần để preview/offline animation nhưng không được tự chốt kết quả. MVP dùng REST cho PvE để giảm độ phức tạp realtime, Docker Compose cho client/admin/server/PostgreSQL/Nginx. Không thêm Redis chỉ để có mặt trong sơ đồ. Nginx phục vụ static build và reverse proxy `/api`; Phase 2 thêm WebSocket upgrade và Redis nếu chạy nhiều instance.
 
@@ -463,15 +461,7 @@ PixiJS scene sở hữu display objects, hủy listener/ticker khi thoát; servi
 
 ## 39. Battle engine
 
-```text
-Input (tọa độ/skill/target)
-  → Action DTO + expectedSequence
-  → validateAction(state, action)
-  → reduceBattle(state, action, seededRng, contentSnapshot)
-  → next BattleState + ordered BattleEvents
-  → persist transaction / API response
-  → PixiJS renderer + HUD
-```
+Input tọa độ, skill hoặc mục tiêu được chuyển thành Action DTO kèm expectedSequence. Server validateAction rồi reduceBattle bằng state, action, seededRng và contentSnapshot; lưu state mới cùng BattleEvents trong transaction và trả API response cho PixiJS renderer/HUD.
 
 `packages/game-core` chứa board generation, match detection, cascade, special resolution, damage, status, enemy AI và reducer. Nó không import PixiJS, DOM, NestJS hoặc Prisma; I/O, auth và persistence nằm ở server. State và action serializable, reducer không đọc thời gian hệ thống hoặc RNG toàn cục; seed/PRNG state được truyền vào và trả ra. BattleEvent có loại rõ (`GEM_REMOVED`, `ENERGY_GAINED`, `DAMAGE`, `HEAL`, `STATUS`, `TURN_CHANGED`, `BATTLE_FINISHED`) để renderer không phải suy lại luật. Cùng snapshot/version/seed/action log phải cho cùng state hash; test replay sau mỗi action. Client chỉ gửi ý định; server quyết định legality, damage và reward. Thiết kế này cho phép unit test thuật toán, replay bug, tái dùng với PvP và thay renderer mà không đổi luật.
 

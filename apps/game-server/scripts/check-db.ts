@@ -7,7 +7,8 @@ async function main(): Promise<void> {
     await prisma.user.findFirst({ select: { id: true } });
     await prisma.playerProfile.findFirst({ select: { id: true } });
     await prisma.authSession.findFirst({ select: { id: true } });
-    console.log("Kết nối PostgreSQL và kiểm tra ba bảng auth thành công.");
+    await prisma.authIdentity.findFirst({ select: { id: true } });
+    console.log("Kết nối PostgreSQL và kiểm tra bốn bảng auth thành công.");
   } finally {
     await prisma.$disconnect();
   }

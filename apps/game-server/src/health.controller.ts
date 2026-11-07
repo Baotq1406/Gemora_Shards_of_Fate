@@ -19,6 +19,7 @@ export class HealthController {
       `;
       await this.prisma.$queryRaw`SELECT 1 FROM "PlayerProfile" LIMIT 0`;
       await this.prisma.$queryRaw`SELECT 1 FROM "AuthSession" LIMIT 0`;
+      await this.prisma.$queryRaw`SELECT 1 FROM "AuthIdentity" LIMIT 0`;
       return { status: "ok", database: "ready" };
     } catch {
       throw new ServiceUnavailableException("Database chưa sẵn sàng. Kiểm tra kết nối và migration.");

@@ -1,12 +1,21 @@
 # Kế hoạch: đăng ký, đăng nhập và đồng bộ database
 
-Ngày: 02/11/2026. Trạng thái: kế hoạch, chưa triển khai backend hoặc chạy migration.
+> Cập nhật 04/11/2026: phạm vi auth của tài liệu này đã được thay thế bởi
+> [kế hoạch email + Google cho người chơi](prd-player-auth-email-google.md).
+> Google nằm trong đợt đầu; quy trình migration và lịch sử triển khai bên dưới vẫn dùng để tham khảo.
+
+Ngày: 02/11/2026. Trạng thái: đã triển khai nền backend/database; API auth chưa triển khai.
 
 **Tiến độ 02/11/2026:** đã triển khai nền NestJS/Prisma và migration đầu tiên (User,
 PlayerProfile, AuthSession); build và 7 test tích hợp đạt trên PostgreSQL 18 tạm.
 Migration đã thử trên database trống, áp dụng lại và so khớp schema qua shadow database.
 Database chính chưa được tạo/cấu hình; người dùng cần tạo role/database và điền .env.
 API auth và nối UI vẫn là các bước tiếp theo. Xem [hướng dẫn backend](../apps/game-server/README.md).
+
+**Tiến độ 04/11/2026:** đã áp dụng migration đầu tiên vào `gemora_dev` local,
+sinh Prisma Client và kiểm tra truy vấn thành công cả ba bảng auth.
+`prisma migrate status` xác nhận database đã đồng bộ. Thông tin kết nối được giữ
+trong `.env` local, không ghi vào tài liệu hoặc Git.
 
 ## 1. Mục tiêu và phạm vi
 

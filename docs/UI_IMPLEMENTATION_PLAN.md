@@ -1,5 +1,8 @@
 # Kế hoạch UI cơ bản — Game và Admin Dashboard
 
+> Kế hoạch tích hợp auth cập nhật 04/11/2026: [email + Google cho người chơi](../tasks/prd-player-auth-email-google.md).
+> Nút Google phải hoạt động thật trong đợt auth đầu; các thông báo giả lập bên dưới chỉ mô tả prototype hiện tại.
+
 Trạng thái: prototype UI đã triển khai ngày 22/09/2026. Phạm vi: frontend với dữ liệu mẫu. Màn chào game có background đơn giản, nút “Chơi ngay”, popup đăng nhập/đăng ký và lựa chọn đăng nhập Google.
 
 Tài liệu liên quan: [GDD](GDD.md), [kiến trúc](ARCHITECTURE.md), [PRD](PRD.md). Kế hoạch này ưu tiên duyệt UI trước các bước engine/backend trong lộ trình tổng thể. Google được bổ sung ở mức giao diện theo yêu cầu mới; OAuth thật vẫn thuộc giai đoạn tích hợp sau.
@@ -32,18 +35,7 @@ Background đầu tiên làm bằng CSS gradient và vài hình gem trang trí �
 
 Màn chào chiếm toàn bộ viewport, gồm tên “GEMORA”, dòng phụ “Shards of Fate”, một câu giới thiệu ngắn và nút chính “Chơi ngay” ở giữa. Nền không cạnh tranh với nội dung. Chưa thêm navigation, bảng tin, cửa hàng hoặc hero carousel.
 
-```text
-┌──────────────────────────────────────────────┐
-│              Background gradient             │
-│                                              │
-│                   GEMORA                     │
-│               Shards of Fate                 │
-│          Ghép ngọc, viết nên vận mệnh         │
-│                                              │
-│                [ Chơi ngay ]                 │
-│                                              │
-└──────────────────────────────────────────────┘
-```
+Bố cục landing dự kiến đặt tên GEMORA, phụ đề Shards of Fate và câu giới thiệu ở giữa nền gradient; nút Chơi ngay nằm bên dưới.
 
 Nhấn “Chơi ngay” mở popup ở tab Đăng nhập. Màn chào vẫn nhìn thấy dưới lớp phủ tối. Đóng popup đưa người dùng về đúng màn chào và trả focus cho nút Chơi ngay.
 
@@ -53,18 +45,7 @@ Nhấn “Chơi ngay” mở popup ở tab Đăng nhập. Màn chào vẫn nhìn
 
 Popup rộng tối đa khoảng 760 px, chia hai cột: form ở trái, lựa chọn Google ở phải. Hai tab Đăng nhập/Đăng ký đặt trên form; nút đóng ở góc trên phải. Google vẫn xuất hiện khi chuyển tab.
 
-```text
-┌──────────────────────────────────────────────────────┐
-│ Chào mừng đến Gemora                              [×] │
-│                                                      │
-│ [Đăng nhập] [Đăng ký]     │                           │
-│ Email                    │   Tiếp tục bằng tài khoản │
-│ [                      ] │                           │
-│ Mật khẩu                 │   [G  Tiếp tục với Google] │
-│ [                Hiện  ] │                           │
-│ [      Đăng nhập       ] │                           │
-└──────────────────────────────────────────────────────┘
-```
+Popup xác thực có tiêu đề chào mừng và nút đóng, hai tab Đăng nhập/Đăng ký, form email/mật khẩu với nút hiện mật khẩu và nút gửi. Khu vực đăng nhập Google nằm cạnh form.
 
 Nút Google có nhãn đầy đủ, không chỉ có biểu tượng. Khi dựng UI dùng tài sản thương hiệu phù hợp; không tự vẽ lại chữ G nhiều màu. Chưa tải Google SDK hoặc mở trang chọn tài khoản thật.
 
@@ -92,18 +73,7 @@ Validation ở prototype chỉ phục vụ phản hồi UI: không tuyên bố k
 
 Sidebar gồm: Tổng quan, Người chơi, Hero, Màn chơi, Nhật ký trận. Header có tên trang và nhãn “Dữ liệu mẫu”. Tài khoản demo ở góc phải là thông tin hiển thị; prototype chưa có đăng nhập Admin hay role guard thật.
 
-```text
-┌───────────────┬───────────────────────────────────────────┐
-│ GEMORA ADMIN  │ Tổng quan        Dữ liệu mẫu   Admin demo │
-│               ├───────────────────────────────────────────┤
-│ Tổng quan     │ [Người chơi] [Trận thắng] [Trận thua]      │
-│ Người chơi    │                                           │
-│ Hero          │ Hoạt động gần đây                         │
-│ Màn chơi      │ ┌───────────────────────────────────────┐ │
-│ Nhật ký trận  │ │ Bảng dữ liệu mẫu                      │ │
-│               │ └───────────────────────────────────────┘ │
-└───────────────┴───────────────────────────────────────────┘
-```
+Dashboard dự kiến gồm sidebar GEMORA ADMIN với các mục Tổng quan, Người chơi, Hero, Màn chơi và Nhật ký trận. Vùng nội dung có tiêu đề, trạng thái dữ liệu mẫu, thông tin admin, các thẻ tổng quan và bảng hoạt động gần đây.
 
 ### Màn hình và mức độ thực hiện
 

@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1540" height="1500" viewBox="0 0 1540 1500">
+<rect width="1540" height="1500" fill="#f8fafc"/>
+<g font-family="Segoe UI, Arial, sans-serif">
+<text x="48" y="48" font-size="16" fill="#64748b" font-weight="700" letter-spacing="2">GEMORA / DATABASE REVIEW</text>
+<text x="48" y="96" font-size="34" fill="#0f172a" font-weight="700">Tài khoản, hồ sơ và phiên đăng nhập</text>
+<text x="48" y="132" font-size="19" fill="#334155" >Cấu trúc đã triển khai • 04/11/2026 • API đăng ký / đăng nhập chưa triển khai</text>
+<path d="M598 562 H744 V324 H930 M744 562 V1076 H930 M744 700 H930" fill="none" stroke="#475569" stroke-width="2.5"/>
+<circle cx="598" cy="562" r="5" fill="#475569"/>
+<circle cx="930" cy="324" r="5" fill="#475569"/>
+<circle cx="930" cy="1076" r="5" fill="#475569"/>
+<circle cx="930" cy="700" r="5" fill="#475569"/>
+<text x="614" y="550" font-size="22" fill="#1d4ed8" font-weight="700">1</text>
+<text x="866" y="310" font-size="22" fill="#0f766e" font-weight="700">0..1</text>
+<text x="861" y="1062" font-size="22" fill="#7c3aed" font-weight="700">0..N</text>
+<text x="866" y="686" font-size="22" fill="#b45309" font-weight="700">0..1</text>
+<text x="768" y="654" font-size="17" fill="#334155" >Google</text>
+<text x="768" y="278" font-size="17" fill="#334155" >Có hồ sơ</text>
+<text x="768" y="1030" font-size="17" fill="#334155" >Có các phiên</text>
+<rect x="48" y="450" width="550" height="436" rx="12" fill="white" stroke="#cbd5e1"/>
+<path d="M60 450 H586 Q598 450 598 462 V530 H48 V462 Q48 450 60 450" fill="#1d4ed8"/>
+<text x="68" y="484" font-size="26" fill="white" font-weight="700">User</text>
+<text x="68" y="512" font-size="17" fill="#f1f5f9" >Tài khoản và quyền truy cập</text>
+<rect x="49" y="538" width="548" height="48" fill="#f8fafc"/>
+<text x="66" y="568" font-size="18" fill="#0f172a" font-weight="600">id</text>
+<text x="278" y="568" font-size="16" fill="#334155" >UUID</text>
+<text x="490" y="568" font-size="15" fill="#1d4ed8" font-weight="700">PK</text>
+<text x="66" y="616" font-size="18" fill="#0f172a" font-weight="600">normalizedEmail</text>
+<text x="278" y="616" font-size="16" fill="#334155" >VARCHAR(254)</text>
+<text x="490" y="616" font-size="15" fill="#1d4ed8" font-weight="700">UQ</text>
+<rect x="49" y="634" width="548" height="48" fill="#f8fafc"/>
+<text x="66" y="664" font-size="18" fill="#0f172a" font-weight="600">passwordHash</text>
+<text x="278" y="664" font-size="16" fill="#334155" >TEXT</text>
+<text x="490" y="664" font-size="15" fill="#1d4ed8" font-weight="700">NULL</text>
+<text x="66" y="712" font-size="18" fill="#0f172a" font-weight="600">role</text>
+<text x="278" y="712" font-size="16" fill="#334155" >UserRole</text>
+<text x="490" y="712" font-size="15" fill="#1d4ed8" font-weight="700">PLAYER</text>
+<rect x="49" y="730" width="548" height="48" fill="#f8fafc"/>
+<text x="66" y="760" font-size="18" fill="#0f172a" font-weight="600">status</text>
+<text x="278" y="760" font-size="16" fill="#334155" >UserStatus</text>
+<text x="490" y="760" font-size="15" fill="#1d4ed8" font-weight="700">ACTIVE</text>
+<text x="66" y="808" font-size="18" fill="#0f172a" font-weight="600">createdAt</text>
+<text x="278" y="808" font-size="16" fill="#334155" >TIMESTAMPTZ(3)</text>
+<text x="490" y="808" font-size="15" fill="#1d4ed8" font-weight="700">now()</text>
+<rect x="49" y="826" width="548" height="48" fill="#f8fafc"/>
+<text x="66" y="856" font-size="18" fill="#0f172a" font-weight="600">updatedAt</text>
+<text x="278" y="856" font-size="16" fill="#334155" >TIMESTAMPTZ(3)</text>
+<text x="490" y="856" font-size="15" fill="#1d4ed8" font-weight="700">Prisma</text>
+<rect x="930" y="164" width="550" height="340" rx="12" fill="white" stroke="#cbd5e1"/>
+<path d="M942 164 H1468 Q1480 164 1480 176 V244 H930 V176 Q930 164 942 164" fill="#0f766e"/>
+<text x="950" y="198" font-size="26" fill="white" font-weight="700">PlayerProfile</text>
+<text x="950" y="226" font-size="17" fill="#f1f5f9" >Hồ sơ hiển thị của người chơi</text>
+<rect x="931" y="252" width="548" height="48" fill="#f8fafc"/>
+<text x="948" y="282" font-size="18" fill="#0f172a" font-weight="600">id</text>
+<text x="1160" y="282" font-size="16" fill="#334155" >UUID</text>
+<text x="1372" y="282" font-size="15" fill="#0f766e" font-weight="700">PK</text>
+<text x="948" y="330" font-size="18" fill="#0f172a" font-weight="600">userId</text>
+<text x="1160" y="330" font-size="16" fill="#334155" >UUID</text>
+<text x="1372" y="330" font-size="15" fill="#0f766e" font-weight="700">FK · UQ</text>
+<rect x="931" y="348" width="548" height="48" fill="#f8fafc"/>
+<text x="948" y="378" font-size="18" fill="#0f172a" font-weight="600">displayName</text>
+<text x="1160" y="378" font-size="16" fill="#334155" >VARCHAR(50)</text>
+<text x="1372" y="378" font-size="15" fill="#0f766e" font-weight="700"></text>
+<text x="948" y="426" font-size="18" fill="#0f172a" font-weight="600">createdAt</text>
+<text x="1160" y="426" font-size="16" fill="#334155" >TIMESTAMPTZ(3)</text>
+<text x="1372" y="426" font-size="15" fill="#0f766e" font-weight="700">now()</text>
+<rect x="931" y="444" width="548" height="48" fill="#f8fafc"/>
+<text x="948" y="474" font-size="18" fill="#0f172a" font-weight="600">updatedAt</text>
+<text x="1160" y="474" font-size="16" fill="#334155" >TIMESTAMPTZ(3)</text>
+<text x="1372" y="474" font-size="15" fill="#0f766e" font-weight="700">Prisma</text>
+<rect x="930" y="540" width="550" height="340" rx="12" fill="white" stroke="#cbd5e1"/>
+<path d="M942 540 H1468 Q1480 540 1480 552 V620 H930 V552 Q930 540 942 540" fill="#b45309"/>
+<text x="950" y="574" font-size="26" fill="white" font-weight="700">AuthIdentity</text>
+<text x="950" y="602" font-size="17" fill="#f1f5f9" >Liên kết Google • khóa duy nhất theo cặp</text>
+<rect x="931" y="628" width="548" height="48" fill="#f8fafc"/>
+<text x="948" y="658" font-size="18" fill="#0f172a" font-weight="600">id</text>
+<text x="1160" y="658" font-size="16" fill="#334155" >UUID</text>
+<text x="1372" y="658" font-size="15" fill="#b45309" font-weight="700">PK</text>
+<text x="948" y="706" font-size="18" fill="#0f172a" font-weight="600">userId</text>
+<text x="1160" y="706" font-size="16" fill="#334155" >UUID</text>
+<text x="1372" y="706" font-size="15" fill="#b45309" font-weight="700">FK · UQ2</text>
+<rect x="931" y="724" width="548" height="48" fill="#f8fafc"/>
+<text x="948" y="754" font-size="18" fill="#0f172a" font-weight="600">provider</text>
+<text x="1160" y="754" font-size="16" fill="#334155" >AuthProvider</text>
+<text x="1372" y="754" font-size="15" fill="#b45309" font-weight="700">UQ1,2</text>
+<text x="948" y="802" font-size="18" fill="#0f172a" font-weight="600">providerSubject</text>
+<text x="1160" y="802" font-size="16" fill="#334155" >TEXT</text>
+<text x="1372" y="802" font-size="15" fill="#b45309" font-weight="700">UQ1</text>
+<rect x="931" y="820" width="548" height="48" fill="#f8fafc"/>
+<text x="948" y="850" font-size="18" fill="#0f172a" font-weight="600">createdAt</text>
+<text x="1160" y="850" font-size="16" fill="#334155" >TIMESTAMPTZ(3)</text>
+<text x="1372" y="850" font-size="15" fill="#b45309" font-weight="700">now()</text>
+<rect x="930" y="916" width="550" height="388" rx="12" fill="white" stroke="#cbd5e1"/>
+<path d="M942 916 H1468 Q1480 916 1480 928 V996 H930 V928 Q930 916 942 916" fill="#7c3aed"/>
+<text x="950" y="950" font-size="26" fill="white" font-weight="700">AuthSession</text>
+<text x="950" y="978" font-size="17" fill="#f1f5f9" >Phiên đăng nhập trên trình duyệt</text>
+<rect x="931" y="1004" width="548" height="48" fill="#f8fafc"/>
+<text x="948" y="1034" font-size="18" fill="#0f172a" font-weight="600">id</text>
+<text x="1160" y="1034" font-size="16" fill="#334155" >UUID</text>
+<text x="1372" y="1034" font-size="15" fill="#7c3aed" font-weight="700">PK</text>
+<text x="948" y="1082" font-size="18" fill="#0f172a" font-weight="600">userId</text>
+<text x="1160" y="1082" font-size="16" fill="#334155" >UUID</text>
+<text x="1372" y="1082" font-size="15" fill="#7c3aed" font-weight="700">FK</text>
+<rect x="931" y="1100" width="548" height="48" fill="#f8fafc"/>
+<text x="948" y="1130" font-size="18" fill="#0f172a" font-weight="600">tokenHash</text>
+<text x="1160" y="1130" font-size="16" fill="#334155" >VARCHAR(64)</text>
+<text x="1372" y="1130" font-size="15" fill="#7c3aed" font-weight="700">UQ</text>
+<text x="948" y="1178" font-size="18" fill="#0f172a" font-weight="600">expiresAt</text>
+<text x="1160" y="1178" font-size="16" fill="#334155" >TIMESTAMPTZ(3)</text>
+<text x="1372" y="1178" font-size="15" fill="#7c3aed" font-weight="700"></text>
+<rect x="931" y="1196" width="548" height="48" fill="#f8fafc"/>
+<text x="948" y="1226" font-size="18" fill="#0f172a" font-weight="600">revokedAt</text>
+<text x="1160" y="1226" font-size="16" fill="#334155" >TIMESTAMPTZ(3)</text>
+<text x="1372" y="1226" font-size="15" fill="#7c3aed" font-weight="700">NULL</text>
+<text x="948" y="1274" font-size="18" fill="#0f172a" font-weight="600">createdAt</text>
+<text x="1160" y="1274" font-size="16" fill="#334155" >TIMESTAMPTZ(3)</text>
+<text x="1372" y="1274" font-size="15" fill="#7c3aed" font-weight="700">now()</text>
+<text x="48" y="990" font-size="22" fill="#0f172a" font-weight="700">Đọc quan hệ</text>
+<text x="48" y="1026" font-size="18" fill="#334155" >Một User có 0 hoặc 1 PlayerProfile.</text>
+<text x="48" y="1058" font-size="18" fill="#334155" >Một User có 0 hoặc 1 liên kết Google.</text>
+<text x="48" y="1090" font-size="18" fill="#334155" >Một User có 0 hoặc nhiều AuthSession.</text>
+<text x="48" y="1122" font-size="18" fill="#334155" >Xóa User: ba loại bản ghi con bị xóa theo.</text>
+<text x="48" y="1180" font-size="20" fill="#0f172a" font-weight="700">AuthIdentity: các khóa UNIQUE ghép</text>
+<text x="48" y="1216" font-size="18" fill="#334155" >UQ1 = (provider, providerSubject)</text>
+<text x="48" y="1248" font-size="18" fill="#334155" >UQ2 = (userId, provider)</text>
+<line x1="48" y1="1370" x2="1492" y2="1370" stroke="#cbd5e1"/>
+<text x="48" y="1410" font-size="18" fill="#334155" >PK: khóa chính   •   FK: khóa ngoại   •   UQ: không trùng   •   NULL: cho phép chưa có giá trị</text>
+<text x="48" y="1450" font-size="17" fill="#334155" >passwordHash và revokedAt cho phép NULL. AuthProvider hiện chỉ có GOOGLE. API auth chưa triển khai.</text>
+</g></svg>

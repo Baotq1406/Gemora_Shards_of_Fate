@@ -1,5 +1,9 @@
 # Kiến trúc chi tiết dự án — Gemora: Shards of Fate
 
+> Phạm vi auth cập nhật 04/11/2026: [kế hoạch người chơi email + Google](../tasks/prd-player-auth-email-google.md)
+> là đặc tả ưu tiên cho đợt triển khai tiếp theo. Dùng AuthSession/cookie cho cả hai cách,
+> Google có ngay đợt đầu; các mô tả access/refresh token cũ bên dưới cần được thay thế khi triển khai.
+
 ## 1. Mục đích và trạng thái
 
 Tài liệu này mô tả kiến trúc mục tiêu cho MVP và lộ trình đi từ skeleton hiện tại đến hệ thống chạy được. Nó là tài liệu kỹ thuật đồng hành với [GDD](GDD.md) và [PRD](PRD.md), không phải tuyên bố rằng toàn bộ thành phần đã được triển khai.
@@ -37,32 +41,13 @@ Tài liệu này mô tả kiến trúc mục tiêu cho MVP và lộ trình đi t
 
 ## 4. System context
 
-```text
-┌──────────────┐       HTTPS / JSON        ┌──────────────────────────┐
-│ Game Player  │ ────────────────────────► │ Gemora Web Platform      │
-│ Web Browser  │ ◄──────────────────────── │ Client + Game API        │
-└──────────────┘                            └─────────────┬────────────┘
-                                                       │
-┌──────────────┐       HTTPS / JSON                    │ SQL
-│ Administrator│ ────────────────────────►             ▼
-│ Web Browser  │ ◄────────────────────────      ┌──────────────┐
-└──────────────┘                                 │ PostgreSQL   │
-                                                 └──────────────┘
-```
+Người chơi và quản trị viên sử dụng trình duyệt để truy cập nền tảng Gemora qua HTTPS/JSON. Nền tảng phục vụ giao diện và API; backend truy cập PostgreSQL bằng SQL.
 
 Người chơi sử dụng game client; quản trị viên sử dụng dashboard. Cả hai chỉ truy cập dữ liệu qua game server. PostgreSQL không lộ ra public network. Nginx là điểm vào triển khai, phục vụ static assets và reverse proxy `/api`.
 
 ## 5. Container architecture
 
-```text
-Browser
-  ├─ /game  ──► Nginx ──► static game-client build (PixiJS)
-  ├─ /admin ──► Nginx ──► static admin-dashboard build (React)
-  └─ /api/v1 ─► Nginx ──► game-server (NestJS)
-                                ├─ application/domain calls ─► @gemora/game-core
-                                ├─ DTO/contracts ───────────► @gemora/shared-types
-                                └─ Prisma ──────────────────► PostgreSQL
-```
+Nginx phục vụ bản build tĩnh của game-client tại /game và admin-dashboard tại /admin, đồng thời chuyển tiếp /api/v1 tới game-server NestJS. Server gọi game-core, dùng hợp đồng trong shared-types và truy cập PostgreSQL qua Prisma.
 
 ### 5.1. Trách nhiệm container
 
@@ -77,18 +62,7 @@ Browser
 
 ## 6. Dependency rules
 
-```text
-game-client ─────────► shared-types
-     └───────────────► game-core  (chỉ preview/animation helper an toàn)
-
-game-server ─────────► shared-types
-     └───────────────► game-core
-
-admin-dashboard ─────► shared-types
-
-game-core ───────────► shared-types (chỉ value types ổn định nếu cần)
-shared-types ─────────► không phụ thuộc app hoặc game-core
-```
+game-client và game-server dùng shared-types và game-core; client chỉ dùng các helper preview/animation an toàn. admin-dashboard dùng shared-types. game-core chỉ được phụ thuộc các value type ổn định trong shared-types khi cần; shared-types không phụ thuộc app hoặc game-core.
 
 Quy tắc bắt buộc:
 
@@ -190,16 +164,7 @@ Tên và signature cuối cùng được chốt trong code review; nguyên tắc
 
 ### 8.3. Reducer pipeline
 
-```text
-Action + expected sequence
-  → structural validation
-  → phase/ownership/rule validation
-  → resolve domain command
-  → ordered BattleEvents
-  → next state + next RNG state
-  → invariant checks
-  → state hash
-```
+Engine nhận action và expected sequence, kiểm tra cấu trúc rồi kiểm tra phase, ownership và luật. Sau khi giải quyết domain command, engine tạo BattleEvents theo thứ tự, state và RNG state mới; cuối cùng kiểm tra invariant và tính state hash.
 
 `BattleEvent` là output giải thích những gì đã xảy ra, ví dụ `GEM_REMOVED`, `SPECIAL_TRIGGERED`, `ENERGY_GAINED`, `DAMAGE_DEALT`, `UNIT_DEFEATED`, `STATUS_APPLIED`, `TURN_CHANGED`, `BATTLE_FINISHED`. Client phát animation từ event rồi reconcile với authoritative state.
 
@@ -211,15 +176,7 @@ RNG phải là dependency với interface nhỏ, có seed/state serialize đư�
 
 ### 9.1. Layers
 
-```text
-Pixi Scene/View
-      ↕ view model / typed UI events
-Presenter + Animation Queue
-      ↕ client use cases
-Store (session, navigation, confirmed snapshots)
-      ↕ repository interfaces
-HTTP/Auth/Asset adapters
-```
+Phía client chia thành Scene/View, Presenter và Animation Queue, Store, rồi các adapter HTTP/Auth/Asset. Các lớp giao tiếp qua view model, UI event có kiểu, use case và repository interface.
 
 - Scene sở hữu display objects, ticker và listener; phải dispose khi rời scene.
 - Service/use case không import `Sprite`, `Container` hoặc DOM.
@@ -233,15 +190,7 @@ Mỗi scene hỗ trợ `enter(context)`, `update(delta)` nếu cần và `exit()
 
 ### 9.3. Battle presentation flow
 
-```text
-Player input
-  → BattlePresenter tạo action + clientActionId + expectedSequence
-  → khóa input và gửi API
-  → nhận ordered events + authoritative snapshot
-  → AnimationQueue phát events
-  → reconcile snapshot/hash
-  → mở input nếu phase cho phép
-```
+Khi người chơi thao tác, BattlePresenter tạo action kèm clientActionId và expectedSequence, khóa input và gọi API. Client nhận events cùng snapshot do server xác nhận, chạy AnimationQueue, đối chiếu snapshot/hash và mở lại input nếu phase cho phép.
 
 Nếu request timeout, client giữ cùng `clientActionId` khi retry. Nếu server trả sequence conflict, client tải lại full state, hủy animation chưa xác nhận và trình diễn trạng thái phục hồi phù hợp.
 
@@ -257,12 +206,7 @@ Nếu request timeout, client giữ cùng `clientActionId` khi retry. Nếu serv
 
 ### 10.1. Module pattern
 
-```text
-Controller → DTO/runtime validation → Application service
-           → authorization/policy  → Domain/game-core
-           → repository interface  → Prisma adapter
-           → transaction boundary  → response mapper
-```
+Controller kiểm tra DTO rồi gọi application service. Use case kiểm tra quyền, áp dụng domain/game-core, truy cập repository qua Prisma adapter, quản lý transaction và ánh xạ response.
 
 Controller mỏng: nhận request, gọi use case, map status code. Service sở hữu transaction và orchestration. Repository chỉ truy cập dữ liệu, không quyết định luật game. Prisma model không trả thẳng ra response.
 
@@ -330,16 +274,7 @@ Public battle state chỉ chứa dữ liệu client cần để hiển thị/hà
 
 ### 12.1. Aggregate và ownership
 
-```text
-User ─1:1─ PlayerProfile
-PlayerProfile ─1:N─ PlayerHero
-PlayerProfile ─1:1─ Inventory ─1:N─ InventoryItem
-PlayerProfile ─1:N─ Team ─1:N─ TeamMember
-PlayerProfile ─1:N─ Battle ─1:N─ BattleAction
-Battle ─1:N─ RewardGrant / BattleParticipant snapshot
-World ─1:N─ Chapter ─1:N─ Stage ─1:N─ StageEnemy
-HeroDefinition ─N:M─ SkillDefinition
-```
+Sơ đồ quan hệ gameplay cũ đã được gỡ để thiết kế lại. Cấu trúc tài khoản đang triển khai và các quan hệ thực tế được giải thích trong [bản đánh giá database](DATABASE_REVIEW.md). Các miền hero, đội, kho, trận, tiến trình và nội dung ở đây vẫn là phạm vi dự kiến.
 
 ### 12.2. Source of truth
 
@@ -390,43 +325,23 @@ Secret được inject qua environment/secret store; `.env.example` chỉ nêu t
 
 ### 15.1. Register
 
-```text
-Client → POST /auth/register
-Server validate → transaction tạo User/Profile/Inventory/starter roster/team
-Server tạo session → trả public profile + token/cookie phù hợp
-Client route Home hoặc onboarding
-```
+Luồng đăng ký trong kiến trúc mục tiêu: client gọi POST /auth/register; server kiểm tra và tạo tài khoản cùng dữ liệu khởi đầu trong transaction, sau đó xử lý phiên và trả dữ liệu công khai để client vào Home/onboarding. Phạm vi auth cơ bản và hành vi sau đăng ký được chốt riêng trong [kế hoạch auth](../tasks/prd-auth-and-database-migrations.md).
 
 Toàn bộ dữ liệu khởi tạo phải atomic; lỗi giữa chừng không để lại account nửa hoàn chỉnh.
 
 ### 15.2. Start battle
 
-```text
-Client chọn stage/team → POST /battles + idempotency key
-Server kiểm tra ownership/unlock/team/content
-Server lấy content version + tạo seed/snapshot
-game-core tạo initial state
-Server lưu Battle ACTIVE
-Client nhận public state và tải Battle scene
-```
+Client gửi stage/team và idempotency key tới POST /battles. Server kiểm tra quyền sở hữu, mở khóa, đội và nội dung; lấy phiên bản nội dung, tạo seed/snapshot và nhờ game-core tạo state ban đầu. Server lưu Battle ACTIVE rồi trả public state để client mở Battle scene.
 
 Double click trả cùng battle/result hoặc lỗi có thể phục hồi, không tạo hai battle active.
 
 ### 15.3. Resolve action
 
-```text
-Client intent → validate/authorize → game-core reducer
-              → transaction state/action/(reward nếu terminal)
-              → events + state → animation queue → reconcile
-```
+Server kiểm tra và phân quyền cho ý định từ client, chạy reducer, rồi lưu state/action và reward nếu kết thúc trận trong transaction. Client nhận events/state để chạy animation và đối chiếu lại trạng thái.
 
 ### 15.4. Publish content
 
-```text
-Admin sửa draft → server validate field/reference/invariant
-Admin xem diff và xác nhận → transaction tạo published version + audit
-Battle mới dùng version mới; battle active giữ snapshot/version cũ
-```
+Admin sửa draft; server kiểm tra field, reference và invariant. Sau khi admin xem diff và xác nhận, server tạo phiên bản published cùng audit trong transaction. Trận mới dùng phiên bản mới; trận đang chạy giữ snapshot và phiên bản cũ.
 
 ## 16. Error handling và resilience
 
@@ -521,20 +436,7 @@ Không publish image/deploy nếu quality gate trước đó thất bại. Build
 
 ## 20. Deployment mục tiêu
 
-```text
-Internet
-   │ HTTPS
-   ▼
-Nginx
-   ├─ static /game
-   ├─ static /admin
-   └─ reverse proxy /api/v1
-             ▼
-        game-server
-             │ private network
-             ▼
-        PostgreSQL volume
-```
+Mô hình triển khai dự kiến: Nginx nhận HTTPS từ Internet, phục vụ /game và /admin, chuyển tiếp /api/v1 tới game-server. game-server truy cập PostgreSQL trong mạng riêng; dữ liệu PostgreSQL nằm trên volume bền vững.
 
 Docker Compose phù hợp môi trường demo/MVP một máy. Database không publish port ra internet. Nginx thực hiện TLS termination, cache static asset có hash và không cache response nhạy cảm. Server chạy migration bằng bước triển khai có kiểm soát, không để nhiều replica tự migrate đồng thời.
 

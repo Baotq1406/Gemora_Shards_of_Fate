@@ -1,6 +1,6 @@
 # Gemora backend — bước nền database
 
-Đã có NestJS 12.3.2, Prisma ORM 7.10.1, PostgreSQL adapter và migration tạo User, PlayerProfile, AuthSession. Chưa có API đăng ký/đăng nhập và chưa nối giao diện. Node.js 24; chạy các lệnh dưới đây từ **gốc repository**. Prisma dùng bản vá 7.10.1 thay cho 7.10.0 trong bài học cũ để khắc phục cảnh báo dependency; cả CLI, Client và adapter được khóa cùng phiên bản.
+Đã có NestJS 12.3.2, Prisma ORM 7.10.1, PostgreSQL và API đăng ký, đăng nhập, quản lý phiên, Google. Giao diện vẫn ở giai đoạn prototype. Xem [hướng dẫn chạy API và cấu hình Google](../../docs/AUTH_SETUP.md). Các lệnh dưới đây dùng Node.js 24 và chạy từ **gốc repository**.
 
 ## 1. Chuẩn bị PostgreSQL một lần trên mỗi máy phát triển
 
@@ -32,7 +32,7 @@ npm run dev:server
 ```
 
 - `http://127.0.0.1:3000/api/v1/health`: server đang chạy.
-- `http://127.0.0.1:3000/api/v1/health/ready`: kiểm tra kết nối và ba bảng auth; trả 503 khi chưa sẵn sàng.
+- `http://127.0.0.1:3000/api/v1/health/ready`: kiểm tra kết nối và bốn bảng auth; trả 503 khi chưa sẵn sàng.
 - Nếu máy khác cần truy cập API, đổi HOST thành `0.0.0.0`, cho phép cổng 3000 trong mạng Private của Windows Firewall, dùng IP LAN máy server. Không cần mở cổng database cho trình duyệt.
 
 Build/chạy bản đã biên dịch:

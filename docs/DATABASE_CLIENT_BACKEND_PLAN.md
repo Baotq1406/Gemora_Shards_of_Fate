@@ -1,5 +1,9 @@
 # Kế hoạch database, client và backend — Gemora
 
+> Cập nhật phạm vi auth 04/11/2026: xem [kế hoạch email + Google](../tasks/prd-player-auth-email-google.md).
+> Google nằm trong đợt đầu, dùng AuthIdentity đề xuất và AuthSession/cookie hiện có;
+> phần RefreshSession và mốc Google sau slice bên dưới là kế hoạch cũ.
+
 Ngày: 05/10/2026. Trạng thái: đề xuất triển khai; chưa phải schema/migration đã chạy.
 
 Căn cứ: [PRD](PRD.md), [GDD](GDD.md), [ARCHITECTURE](ARCHITECTURE.md), [UI_IMPLEMENTATION_PLAN](UI_IMPLEMENTATION_PLAN.md) và mã hiện tại. Tài liệu này cụ thể hóa kiến trúc đã đề xuất; khi triển khai cần đồng bộ các quyết định mới vào PRD/Architecture.
