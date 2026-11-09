@@ -1,0 +1,232 @@
+/* A carved wood frame around a light parchment form. Scoped to onboarding. */
+.g-create-compact .g-create-panel {
+  position: relative;
+  isolation: isolate;
+  padding: 19px 25px 30px;
+  border: 5px solid #75482b;
+  border-radius: 27px 27px 22px 22px;
+  background:
+    radial-gradient(ellipse at 50% 0, #fffdf0 0, transparent 62%),
+    linear-gradient(
+      100deg,
+      #f8dda1 0%,
+      #fff2cd 7%,
+      #fff6dc 50%,
+      #fff0c4 93%,
+      #edca89 100%
+    );
+  box-shadow:
+    inset 0 0 0 3px #e4b36b,
+    inset 0 0 0 6px #fff3c2,
+    0 5px 0 #c7924c,
+    0 9px 0 #654127,
+    0 17px 25px #29492d40;
+}
+
+.g-create-compact .g-create-panel::before {
+  content: "";
+  position: absolute;
+  inset: 11px;
+  width: auto;
+  height: auto;
+  border: 1px solid #c89e5e66;
+  border-radius: 16px 16px 10px 10px;
+  background: none;
+  box-shadow: 0 0 0 1px #fffbed80;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.g-create-compact .g-create-panel::after {
+  content: none;
+}
+
+.g-create-compact #create-title {
+  position: relative;
+  margin: -8px -16px 17px;
+  padding: 15px 8px 17px;
+  border: 2px solid #744225;
+  border-radius: 19px 19px 12px 12px;
+  background:
+    repeating-linear-gradient(
+      3deg,
+      transparent 0 12px,
+      #7f48271c 13px 14px,
+      transparent 15px 25px
+    ),
+    linear-gradient(#c28a48 0%, #ac7038 55%, #965c30 100%);
+  color: #fff2c7;
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px #744323;
+  box-shadow:
+    inset 0 2px #f6d18b,
+    inset 0 -3px #814c2c66,
+    0 3px 0 #6d432641,
+    0 5px 9px #754b2d22;
+}
+
+.g-create-compact #create-title::before,
+.g-create-compact #create-title::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border: 1px solid #744326;
+  border-radius: 50%;
+  background: #f3cb7b;
+  box-shadow:
+    inset 0 1px #fff2b6,
+    0 1px #e4b36e;
+}
+.g-create-compact #create-title::before {
+  left: 10px;
+}
+.g-create-compact #create-title::after {
+  right: 10px;
+}
+
+.g-create-compact .g-avatar-center {
+  position: relative;
+  margin: 0 0 16px;
+  padding: 2px 0;
+  isolation: isolate;
+}
+.g-create-compact .g-avatar-center::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 16%;
+  right: 16%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #c4a26c 20%,
+    #c4a26c 80%,
+    transparent
+  );
+  z-index: -1;
+}
+.g-create-compact .g-avatar-edit {
+  box-shadow:
+    0 0 0 3px #f8d68b,
+    0 0 0 5px #ac7a3b,
+    0 4px 0 5px #8c64222b;
+  background: #fff3c3;
+}
+.g-create-compact .g-edit-badge {
+  right: -9px;
+  bottom: -3px;
+  background: linear-gradient(#fff4c1, #edc470);
+  border-color: #9c6c35;
+  box-shadow: 0 2px 0 #77532933;
+}
+.g-create-compact .g-label-row label {
+  font-size: 12px;
+  color: #7d5935;
+}
+.g-create-compact .g-name-wrap input {
+  border: 2px solid #bc945d;
+  border-radius: 10px;
+  background: #fffdf2;
+  box-shadow:
+    inset 0 3px 0 #d7c59a4d,
+    0 1px 0 #fffdf3;
+  color: #624c33;
+}
+.g-create-compact .g-name-wrap input:focus {
+  border-color: #719f50;
+  box-shadow:
+    inset 0 2px #d7c59a33,
+    0 0 0 3px #98be6840;
+}
+.g-create-compact .g-name-wrap input[aria-invalid="true"] {
+  border-color: #c45a47;
+}
+.g-create-compact #g-suggest {
+  background: linear-gradient(#fff8dd, #f4d798);
+  border: 1px solid #b59054;
+  box-shadow:
+    inset 0 1px #fffef2,
+    0 2px #b08a4e22;
+  color: #7d9451 !important;
+}
+.g-create-compact .g-field-hint {
+  color: #937b53;
+}
+.g-create-compact .g-play-button {
+  position: relative;
+  margin-top: 21px;
+  min-height: 56px;
+  padding: 12px 20px;
+  gap: 11px;
+  border: 1px solid #719f59;
+  border-radius: 9999px;
+  background: linear-gradient(#a6d97a, #79b65c);
+  box-shadow: 0 4px 0 #568b45;
+  /* Slightly darker than the palette seed for 4.5:1 contrast at both stops. */
+  color: #234329 !important;
+  text-shadow: none;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.25;
+  cursor: pointer;
+  filter: none;
+  transform: none;
+  transition:
+    transform 150ms ease-out,
+    box-shadow 150ms ease-out,
+    filter 150ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .g-create-compact .g-play-button:hover:not(:disabled) {
+    filter: brightness(1.04);
+  }
+}
+.g-create-compact .g-play-button:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #568b45;
+}
+.g-create-compact .g-play-button:focus-visible {
+  outline: 2px solid #264d2e;
+  outline-offset: 6px;
+}
+.g-create-compact .g-play-button:disabled {
+  background: linear-gradient(#c5d2b9, #a9b89e);
+  border-color: #99ab8f;
+  box-shadow: 0 3px 0 #8b9f80;
+  color: #53634c !important;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+}
+.g-create-compact .g-play-button .g-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+@media (max-width: 700px) {
+  .g-create-compact .g-create-panel {
+    padding: 19px 23px 29px;
+  }
+  .g-create-compact #create-title {
+    font-size: 22px;
+  }
+  .g-create-compact .g-compact-companion {
+    margin-bottom: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .g-create-compact .g-play-button {
+    transition: none;
+  }
+}
+
+.gemora-live .g-world { min-height: 100svh; }
+.g-connection-notice { position: fixed; z-index: 100; top: 12px; left: 50%; transform: translateX(-50%); width: min(90%, 520px); padding: 12px; border: 1px solid #956633; border-radius: 12px; background: #fff3cd; color: #543d26; box-shadow: 0 3px 12px #0002; }
+.g-connection-notice button { margin-left: 12px; cursor: pointer; }
+.gemora-live .g-create .g-footer button { padding: 8px 18px; border: 1px solid #956633; border-radius: 9999px; background: #fff3cd; color: #654326; font-weight: 600; cursor: pointer; }

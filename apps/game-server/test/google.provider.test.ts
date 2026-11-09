@@ -38,10 +38,10 @@ for (const [name, patch] of Object.entries({
 })) {
   test(`Google verifier rejects invalid ${name}`, async () => {
     const provider = new OfflineProvider(new AuthSettings()); provider.token = jwt({ ...claims, ...patch });
-    await assert.rejects(provider.verifyCode('code', 'verifier', 'test-nonce'), /Không thể xác minh/);
+    await assert.rejects(provider.verifyCode('code', 'verifier', 'test-nonce'), /Unable to verify/);
   });
 }
 test('Google verifier rejects tokens signed by another key', async () => {
   const provider = new OfflineProvider(new AuthSettings()); provider.token = jwt(claims, true);
-  await assert.rejects(provider.verifyCode('code', 'verifier', 'test-nonce'), /Không thể xác minh/);
+  await assert.rejects(provider.verifyCode('code', 'verifier', 'test-nonce'), /Unable to verify/);
 });

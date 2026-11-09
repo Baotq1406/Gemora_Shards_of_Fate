@@ -1,5 +1,7 @@
 # Database Gemora — bản hiện tại để xem xét
 
+> Kiểm tra hiện trạng mới nhất ngày 08/11/2026: [database trước khi nối UI](DATABASE_AUDIT_2026-11-08.md). API auth đã được triển khai; các câu bên dưới nói auth “chưa có” phản ánh thời điểm tài liệu cũ, không phải trạng thái hiện tại.
+
 Ngày: 04/11/2026. Nguồn: [schema.prisma](../apps/game-server/prisma/schema.prisma) và [migration đầu tiên](../apps/game-server/prisma/migrations/20261102000100_init_auth/migration.sql).
 
 Đây là sơ đồ của **cấu trúc đã triển khai cho phần tài khoản**, không phải thiết kế toàn bộ game. Bốn bảng hỗ trợ lưu tài khoản local, Google và phiên. Backend hiện chưa có API đăng ký, đăng nhập hoặc xử lý phiên; có bảng không đồng nghĩa các hành vi này đã hoạt động.

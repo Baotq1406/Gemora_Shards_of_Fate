@@ -18,6 +18,6 @@ async function bootstrap(): Promise<void> {
 
 bootstrap().catch(() => {
   // Do not print driver errors: they can include connection details or secrets.
-  console.error("Không thể khởi động backend. Kiểm tra .env, PORT và PostgreSQL; chạy npm run db:check.");
+  console.error("Could not start the backend. Check .env, PORT, and PostgreSQL; run npm run db:check.");
   process.exitCode = 1;
 });

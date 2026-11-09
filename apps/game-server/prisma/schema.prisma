@@ -49,12 +49,17 @@ model AuthIdentity {
 }
 
 model PlayerProfile {
-  id          String   @id @default(uuid()) @db.Uuid
-  userId      String   @unique @db.Uuid
-  displayName String   @db.VarChar(50)
-  createdAt   DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                    String    @id @default(uuid()) @db.Uuid
+  userId                String    @unique @db.Uuid
+  displayName           String    @db.VarChar(50)
+  // Legacy account display name above is not a confirmed in-game name.
+  playerName            String?   @db.VarChar(16)
+  normalizedPlayerName  String?   @unique @db.VarChar(32)
+  avatarKey             String?   @db.VarChar(32)
+  onboardingCompletedAt DateTime? @db.Timestamptz(3)
+  createdAt             DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime  @updatedAt @db.Timestamptz(3)
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model AuthSession {

@@ -35,11 +35,11 @@ export class AuthSecurity implements CanActivate, OnModuleDestroy {
     let bucket = this.buckets.get(key);
     if (!bucket || bucket.until <= now) {
       if (this.buckets.size >= 10000) this.prune();
-      if (!this.buckets.has(key) && this.buckets.size >= 10000) throw new HttpException('Vui lòng thử lại sau.', 429);
+      if (!this.buckets.has(key) && this.buckets.size >= 10000) throw new HttpException('Please try again later.', 429);
       bucket = { count: 0, until: now + duration };
       this.buckets.set(key, bucket);
     }
-    if (++bucket.count > max) throw new HttpException('Bạn thao tác quá nhanh. Vui lòng thử lại sau.', HttpStatus.TOO_MANY_REQUESTS);
+    if (++bucket.count > max) throw new HttpException('Too many requests. Please try again later.', HttpStatus.TOO_MANY_REQUESTS);
   }
   canActivate(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest<Request>();
@@ -50,7 +50,7 @@ export class AuthSecurity implements CanActivate, OnModuleDestroy {
     if (!['GET', 'HEAD'].includes(req.method)) {
       // Exact Origin + JSON-only writes block browser CSRF; never infer origin from Host.
       if (req.headers.origin !== this.settings.origin || !req.is('application/json')) {
-        throw new ForbiddenException('Nguồn yêu cầu không hợp lệ.');
+        throw new ForbiddenException('Invalid request origin.');
       }
     }
     // Do not trust arbitrary X-Forwarded-For. Configure a trusted proxy explicitly before deployment.

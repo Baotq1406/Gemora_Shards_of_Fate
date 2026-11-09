@@ -20,7 +20,10 @@ interface Attempt {
   intent: 'LOGIN' | 'LINK'; sessionHash?: string; userId?: string;
 }
 export function publicUser(user: Account): AuthUser {
+  const p = user.profile;
+  const player = p?.onboardingCompletedAt && p.playerName && p.avatarKey ? { id: p.id, playerName: p.playerName, avatarKey: p.avatarKey, onboardingCompletedAt: p.onboardingCompletedAt.toISOString() } : null;
   return {
+    player, onboardingState: player ? 'READY' : 'NEEDS_PROFILE',
     id: user.id, email: user.normalizedEmail, role: user.role,
     profile: user.profile ? { id: user.profile.id, displayName: user.profile.displayName } : null,
     authMethods: { password: user.passwordHash !== null, google: user.identities.some(i => i.provider === 'GOOGLE') },
@@ -56,7 +59,7 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
   }
   async register(body: unknown) {
     const input = objectInput(body, ['displayName', 'email', 'password']);
-    const displayName = displayNameInput(input.displayName);
+    const displayName = input.displayName === undefined ? 'Adventurer' : displayNameInput(input.displayName);
     const normalizedEmail = emailInput(input.email);
     const passwordHash = await this.hashPassword(passwordInput(input.password, true));
     try {
@@ -66,14 +69,14 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
       return { user: publicUser(user) };
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-        throw new ConflictException('Email này chưa thể dùng để đăng ký. Hãy đăng nhập bằng phương thức đã có.');
+        throw new ConflictException('This email cannot be used to register. Please sign in using an existing method.');
       }
       throw error;
     }
   }
   private async newSession(tx: Tx, userId: string, oldToken?: string) {
     const user = await tx.user.findUnique({ where: { id: userId }, include: userInclude });
-    if (!user || user.status !== 'ACTIVE') throw new UnauthorizedException('Không thể đăng nhập tài khoản này.');
+    if (!user || user.status !== 'ACTIVE') throw new UnauthorizedException('Unable to sign in to this account.');
     if (oldToken) await tx.authSession.updateMany({ where: { tokenHash: digest(oldToken), revokedAt: null }, data: { revokedAt: new Date() } });
     const token = randomToken();
     await tx.authSession.create({ data: { userId, tokenHash: digest(token), expiresAt: new Date(Date.now() + this.settings.ttlMs) } });
@@ -84,15 +87,15 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
     const email = emailInput(input.email);
     const password = passwordInput(input.password);
     const user = await this.db.user.findUnique({ where: { normalizedEmail: email }, include: userInclude });
-    if (!await this.checkPassword(user, password)) throw new UnauthorizedException('Email hoặc mật khẩu không đúng.');
+    if (!await this.checkPassword(user, password)) throw new UnauthorizedException('Incorrect email or password.');
     return this.db.$transaction(tx => this.newSession(tx, user!.id, oldToken));
   }
   async current(token?: string, tx: Tx = this.db): Promise<AuthenticatedSession> {
-    if (!token) throw new UnauthorizedException('Vui lòng đăng nhập.');
+    if (!token) throw new UnauthorizedException('Please sign in.');
     const tokenHash = digest(token);
     const session = await tx.authSession.findUnique({ where: { tokenHash }, include: { user: { include: userInclude } } });
     if (!session || session.revokedAt || session.expiresAt <= new Date() || session.user.status !== 'ACTIVE') {
-      throw new UnauthorizedException('Phiên đăng nhập không còn hiệu lực.');
+      throw new UnauthorizedException('Your session is no longer valid.');
     }
     return { user: session.user, sessionId: session.id, tokenHash };
   }
@@ -101,7 +104,7 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
   }
   beginGoogle(intent: 'LOGIN' | 'LINK', currentToken?: string, userId?: string) {
     this.pruneAttempts();
-    if (this.attempts.size >= 2000) throw new ServiceUnavailableException('Vui lòng thử lại sau.');
+    if (this.attempts.size >= 2000) throw new ServiceUnavailableException('Please try again later.');
     const state = randomToken(), browser = randomToken(), nonce = randomToken(), verifier = randomToken();
     const url = this.google.authorizationUrl(state, nonce, verifier);
     this.attempts.set(digest(state), {
@@ -113,7 +116,7 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
   async beginLink(body: unknown, token?: string) {
     const input = objectInput(body, ['password']);
     const session = await this.current(token);
-    if (!await this.checkPassword(session.user, passwordInput(input.password))) throw new UnauthorizedException('Không thể xác nhận mật khẩu.');
+    if (!await this.checkPassword(session.user, passwordInput(input.password))) throw new UnauthorizedException('Unable to verify the password.');
     return this.beginGoogle('LINK', token, session.user.id);
   }
   private takeAttempt(state: unknown, browser?: string, currentToken?: string): Attempt {

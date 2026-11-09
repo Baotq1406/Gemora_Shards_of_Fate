@@ -2,7 +2,9 @@
 
 Monorepo cho Gemora: Shards of Fate. Hiện dự án đã có prototype UI cho màn chào
 game, popup xác thực và Admin Dashboard. Backend đã có nền NestJS/Prisma và migration
-tài khoản và API đăng ký/đăng nhập. Popup xác thực đang chờ kết nối API.
+tài khoản và API đăng ký/đăng nhập. Popup xác thực đã kết nối API email/Google,
+khôi phục phiên khi tải lại và hỗ trợ đăng xuất, liên kết Google. Gameplay và Admin
+vẫn chưa kết nối dữ liệu game thật.
 
 [Hướng dẫn chạy API và cấu hình Google](docs/AUTH_SETUP.md) có các bước tạo OAuth client và thử đăng nhập trên localhost.
 
@@ -47,7 +49,7 @@ Gemora_Shards_of_Fate/
 │   ├── game-server/       # NestJS, Prisma, migration auth và health API
 │   └── admin-dashboard/   # React dashboard với dữ liệu mẫu
 ├── packages/
-│   ├── shared-types/     # src/index.ts trống
+│   ├── shared-types/     # Hợp đồng API tài khoản trong src/auth.d.ts
 │   └── game-core/        # src/index.ts trống
 ├── docs/
 │   ├── GDD.md            # Thiết kế gameplay và phạm vi trải nghiệm MVP
@@ -81,8 +83,8 @@ npm run build:ui
 - `docs`: GDD, quyết định thiết kế và tài liệu dự án.
 
 Hướng tổ chức dự kiến: các app dùng packages qua tên `@gemora/...`; packages không
-phụ thuộc ngược vào apps. Hiện chưa thiết lập dependency và đầu ra để import các
-package dùng chung. Mã dùng chung với client không chứa secrets hoặc dữ liệu server cần giữ kín.
+phụ thuộc ngược vào apps. Game client và backend dùng hợp đồng tài khoản từ
+`@gemora/shared-types`. Mã dùng chung với client không chứa secrets hoặc dữ liệu server cần giữ kín.
 
 Chỉ thêm thư mục tính năng khi có nhu cầu từ GDD. Chọn database, cơ chế realtime,
 đăng nhập và mô hình triển khai sau khi rõ vòng lặp gameplay và quy mô multiplayer.

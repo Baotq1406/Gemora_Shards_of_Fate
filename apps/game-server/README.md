@@ -96,6 +96,15 @@ không phải xác nhận đã thiết lập gemora_dev trên máy người dùn
 
 ## 5. Xử lý lỗi thường gặp
 
+### Cập nhật hồ sơ nhân vật 08/11/2026
+
+Migration `20261108000100_player_onboarding` bổ sung tên nhân vật, khóa tên chuẩn hóa, avatar và thời điểm hoàn tất. Các hồ sơ cũ giữ nguyên `displayName` và có bốn trường mới NULL; không tự lấy tên Google làm tên nhân vật. Bốn trường phải cùng NULL hoặc cùng có giá trị, được ghi nguyên tử khi hoàn tất onboarding. Avatar mặc định `crystal-dragon` sẽ do API chọn khi lưu, không có default ở DB để tránh hồ sơ chưa hoàn tất bị ghi một phần.
+
+CHECK trong migration SQL bảo đảm tên NFC dài 3–16 ký tự, không khoảng trắng đầu/cuối/lặp hoặc ký tự điều khiển; khóa tên khớp phép chuyển chữ thường; avatar thuộc năm ID được hỗ trợ. Khóa tên unique chặn trùng hoa/thường, vẫn phân biệt dấu. Dùng collation `pg_catalog.pg_c_utf8` để chuyển chữ thường Unicode độc lập locale máy; đã kiểm chứng trên PostgreSQL 18.6. Môi trường triển khai cần có collation này. API tiếp theo vẫn phải kiểm tra tập chữ/số/dấu kết hợp, tên dành riêng và không cho onboarding ghi đè tên đã xác nhận.
+
+`npm run test:db` hiện bao gồm kiểm tra onboarding trong `test/onboarding.database.test.mjs`. Các test này chỉ chạy trên `TEST_DATABASE_URL` có tên kết thúc `_test` và rollback dữ liệu từng test. Đã kiểm tra 15 test onboarding, 12 test database, 21 test auth/Google và build backend. Chưa bổ sung API tạo nhân vật, chưa thay đổi luồng UI hoặc schema gameplay.
+
+- Windows báo không tìm thấy `npm` hoặc `npm.cmd`: từ gốc repository chạy `.\start-server.cmd`. File này tự tìm npm ở `%APPDATA%\npm` hoặc `%ProgramFiles%\nodejs` và thêm vào PATH cho lần chạy hiện tại. Các lệnh khác dùng `.\npm-local.cmd`, ví dụ `.\npm-local.cmd run db:check`. Máy vẫn cần cài Node.js 24 kèm npm.
 - Kết nối thất bại: kiểm tra dịch vụ PostgreSQL, host/port và mật khẩu trong .env; dùng đúng gemora_app thay vì mật khẩu postgres.
 - Database không tồn tại: hoàn thành bước 1; không dùng reset để sửa lỗi cấu hình.
 - Health ready trả 503: chạy db:status, db:migrate:apply và db:check.

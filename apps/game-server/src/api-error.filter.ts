@@ -10,7 +10,9 @@ export class ApiErrorFilter implements ExceptionFilter {
       (type === 'entity.too.large' ? 413 : type === 'entity.parse.failed' ? 400 : 500);
     res.setHeader('Cache-Control', 'no-store');
     if (status === 429) res.setHeader('Retry-After', '900');
-    res.status(status).json({ statusCode: status, message: error instanceof HttpException ? error.message :
-      (status === 413 ? 'Dữ liệu gửi lên quá lớn.' : 'Không thể xử lý yêu cầu. Vui lòng thử lại.') });
+    const detail = error instanceof HttpException ? error.getResponse() : null;
+    const code = typeof detail === 'object' && detail && 'code' in detail ? detail.code : undefined;
+    res.status(status).json({ statusCode: status, ...(typeof code === 'string' ? { code } : {}), message: error instanceof HttpException ? error.message :
+      (status === 413 ? 'The request payload is too large.' : 'Unable to process the request. Please try again.') });
   }
 }

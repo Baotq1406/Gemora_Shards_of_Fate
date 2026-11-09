@@ -10,6 +10,6 @@ import { SessionGuard } from "./session.guard.js";
 @Module({
   controllers: [AuthController],
   providers: [PrismaService, AuthService, AuthSettings, AuthSecurity, GoogleProvider, SessionGuard],
-  exports: [PrismaService, AuthService, AuthSettings, SessionGuard],
+  exports: [PrismaService, AuthService, AuthSettings, SessionGuard, AuthSecurity],
 })
 export class AuthModule {}

@@ -46,28 +46,28 @@ export const pageMeta: Record<
   { label: string; description: string; icon: string }
 > = {
   overview: {
-    label: "Tổng quan",
-    description: "Tình hình hoạt động gần đây của Gemora",
+    label: "Overview",
+    description: "Recent activity across Gemora",
     icon: "⌂",
   },
   players: {
-    label: "Người chơi",
-    description: "Tìm kiếm và kiểm tra trạng thái tài khoản",
+    label: "Players",
+    description: "Search accounts and review their status",
     icon: "♙",
   },
   heroes: {
-    label: "Hero",
-    description: "Quản lý nội dung hero ở mức prototype",
+    label: "Heroes",
+    description: "Manage hero content in the prototype",
     icon: "✦",
   },
   stages: {
-    label: "Màn chơi",
-    description: "Theo dõi thứ tự, loại và phần thưởng stage",
+    label: "Stages",
+    description: "Review stage order, types, and rewards",
     icon: "◇",
   },
   battles: {
-    label: "Nhật ký trận",
-    description: "Kiểm tra kết quả và thông tin trận đấu",
+    label: "Battle log",
+    description: "Review battle results and details",
     icon: "▤",
   },
 };
@@ -136,7 +136,7 @@ export const initialHeroes: Hero[] = [
     element: "Fire",
     role: "Striker",
     status: "PUBLISHED",
-    updatedAt: "21/09/2026",
+    updatedAt: "09/21/2026",
   },
   {
     id: "H-WAT-01",
@@ -144,7 +144,7 @@ export const initialHeroes: Hero[] = [
     element: "Water",
     role: "Healer",
     status: "PUBLISHED",
-    updatedAt: "21/09/2026",
+    updatedAt: "09/21/2026",
   },
   {
     id: "H-NAT-01",
@@ -152,7 +152,7 @@ export const initialHeroes: Hero[] = [
     element: "Nature",
     role: "Tank",
     status: "PUBLISHED",
-    updatedAt: "20/09/2026",
+    updatedAt: "09/20/2026",
   },
   {
     id: "H-LIG-01",
@@ -160,7 +160,7 @@ export const initialHeroes: Hero[] = [
     element: "Light",
     role: "Support",
     status: "DRAFT",
-    updatedAt: "22/09/2026",
+    updatedAt: "09/22/2026",
   },
   {
     id: "H-DAR-01",
@@ -168,7 +168,7 @@ export const initialHeroes: Hero[] = [
     element: "Dark",
     role: "Striker",
     status: "DRAFT",
-    updatedAt: "22/09/2026",
+    updatedAt: "09/22/2026",
   },
   {
     id: "H-FIR-02",
@@ -176,7 +176,7 @@ export const initialHeroes: Hero[] = [
     element: "Fire",
     role: "Tank",
     status: "DRAFT",
-    updatedAt: "19/09/2026",
+    updatedAt: "09/19/2026",
   },
 ];
 
@@ -184,7 +184,7 @@ export const initialStages: Stage[] = [
   {
     id: "ST-01",
     order: 1,
-    name: "Những mảnh vỡ đầu tiên",
+    name: "The First Shards",
     type: "Tutorial",
     goldReward: 100,
     status: "PUBLISHED",
@@ -192,7 +192,7 @@ export const initialStages: Stage[] = [
   {
     id: "ST-02",
     order: 2,
-    name: "Lối mòn sương bạc",
+    name: "Silvermist Trail",
     type: "Normal",
     goldReward: 140,
     status: "PUBLISHED",
@@ -200,7 +200,7 @@ export const initialStages: Stage[] = [
   {
     id: "ST-03",
     order: 3,
-    name: "Khu rừng thức giấc",
+    name: "The Awakening Forest",
     type: "Normal",
     goldReward: 180,
     status: "PUBLISHED",
@@ -208,7 +208,7 @@ export const initialStages: Stage[] = [
   {
     id: "ST-04",
     order: 4,
-    name: "Canh gác cổ thụ",
+    name: "Guardian of the Ancient Tree",
     type: "Elite",
     goldReward: 260,
     status: "DRAFT",
@@ -216,7 +216,7 @@ export const initialStages: Stage[] = [
   {
     id: "ST-05",
     order: 5,
-    name: "Trái tim hư không",
+    name: "Heart of the Void",
     type: "Boss",
     goldReward: 500,
     status: "DRAFT",
@@ -291,7 +291,7 @@ export const initialBattles: Battle[] = [
 ];
 
 export function formatDateTime(value: string): string {
-  return new Intl.DateTimeFormat("vi-VN", {
+  return new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",

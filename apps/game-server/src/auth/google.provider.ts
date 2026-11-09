@@ -11,7 +11,7 @@ export class GoogleProvider {
   constructor(@Inject(AuthSettings) private readonly settings: AuthSettings) {}
   protected client(): OAuth2Client {
     const config = this.settings.google;
-    if (!config) throw new ServiceUnavailableException('Đăng nhập Google chưa được cấu hình.');
+    if (!config) throw new ServiceUnavailableException('Google sign-in is not configured.');
     return new OAuth2Client({ clientId: config.clientId, clientSecret: config.clientSecret,
       redirectUri: config.redirectUri, transporterOptions: { timeout: 10000, retry: false } });
   }
@@ -32,12 +32,12 @@ export class GoogleProvider {
       if (!payload || (payload as unknown as Record<string, unknown>).nonce !== nonce || payload.email_verified !== true ||
           payload.exp <= Math.floor(Date.now() / 1000) ||
           !payload.sub || payload.sub.length > 255) throw new Error('Invalid identity');
-      let displayName = 'Người chơi Gemora';
+      let displayName = 'Gemora Player';
       try { displayName = displayNameInput(payload.name); } catch { /* Valid default if Google has no usable name. */ }
       return { subject: payload.sub, email: emailInput(payload.email), displayName };
     } catch {
       // Provider errors may contain codes/tokens/client secrets. Never pass them into Nest logs or responses.
-      throw new UnauthorizedException('Không thể xác minh đăng nhập Google. Vui lòng thử lại.');
+      throw new UnauthorizedException('Unable to verify Google sign-in. Please try again.');
     }
   }
 }

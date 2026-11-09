@@ -58,9 +58,7 @@ export function App() {
     setPanel(null);
     setConfirmPlayer(null);
     setToast(
-      status === "LOCKED"
-        ? "Đã khóa tài khoản mẫu."
-        : "Đã mở khóa tài khoản mẫu.",
+      status === "LOCKED" ? "Demo account locked." : "Demo account unlocked.",
     );
   };
 
@@ -69,7 +67,7 @@ export function App() {
       items.map((item) => (item.id === hero.id ? hero : item)),
     );
     setPanel(null);
-    setToast("Đã lưu thay đổi Hero trong bộ nhớ mẫu.");
+    setToast("Hero changes saved in demo memory.");
   };
 
   const saveStage = (stage: Stage) => {
@@ -77,7 +75,7 @@ export function App() {
       items.map((item) => (item.id === stage.id ? stage : item)),
     );
     setPanel(null);
-    setToast("Đã lưu thay đổi Màn chơi trong bộ nhớ mẫu.");
+    setToast("Stage changes saved in demo memory.");
   };
 
   return (
@@ -93,7 +91,7 @@ export function App() {
           <button
             className="icon-button menu-button"
             type="button"
-            aria-label="Mở menu"
+            aria-label="Open menu"
             onClick={() => setMenuOpen(true)}
           >
             ☰
@@ -104,21 +102,21 @@ export function App() {
           </div>
           <div className="topbar-actions">
             <label className="preview-picker">
-              <span>Trạng thái xem trước</span>
+              <span>Preview state</span>
               <select
                 value={previewState}
                 onChange={(event) =>
                   setPreviewState(event.target.value as PreviewState)
                 }
               >
-                <option value="normal">Bình thường</option>
-                <option value="loading">Đang tải</option>
-                <option value="empty">Trống</option>
-                <option value="error">Lỗi</option>
+                <option value="normal">Normal</option>
+                <option value="loading">Loading</option>
+                <option value="empty">Empty</option>
+                <option value="error">Error</option>
               </select>
             </label>
-            <span className="demo-badge">Dữ liệu mẫu</span>
-            <div className="admin-profile" aria-label="Tài khoản hiện tại">
+            <span className="demo-badge">Sample data</span>
+            <div className="admin-profile" aria-label="Current account">
               <span className="avatar">AD</span>
               <span>
                 <strong>Admin demo</strong>
@@ -181,12 +179,12 @@ export function App() {
         <ConfirmDialog
           title={
             confirmPlayer.status === "ACTIVE"
-              ? "Khóa tài khoản mẫu?"
-              : "Mở khóa tài khoản mẫu?"
+              ? "Lock demo account?"
+              : "Unlock demo account?"
           }
-          message={`Thay đổi trạng thái của ${confirmPlayer.username} chỉ được giữ đến khi tải lại trang.`}
+          message={`Status changes for ${confirmPlayer.username} last only until the page is reloaded.`}
           confirmLabel={
-            confirmPlayer.status === "ACTIVE" ? "Khóa tài khoản" : "Mở khóa"
+            confirmPlayer.status === "ACTIVE" ? "Lock account" : "Unlock"
           }
           danger={confirmPlayer.status === "ACTIVE"}
           onCancel={() => setConfirmPlayer(null)}
@@ -224,7 +222,7 @@ function Sidebar({
             <small>ADMIN CONSOLE</small>
           </span>
         </div>
-        <nav aria-label="Điều hướng quản trị">
+        <nav aria-label="Admin navigation">
           {navigation.map(([id, item]) => (
             <button
               key={id}
@@ -263,9 +261,9 @@ function PreviewBoundary({
     return (
       <PageMessage
         icon="◇"
-        title="Chưa có dữ liệu"
-        description="Không tìm thấy bản ghi cho trang này trong dữ liệu mẫu."
-        action="Về trạng thái bình thường"
+        title="No data yet"
+        description="No sample records were found for this page."
+        action="Return to normal view"
         onAction={onRetry}
       />
     );
@@ -273,9 +271,9 @@ function PreviewBoundary({
     return (
       <PageMessage
         icon="!"
-        title="Không thể tải dữ liệu mẫu"
-        description="Đây là trạng thái lỗi dùng để duyệt giao diện. Bạn có thể thử lại ngay."
-        action="Thử lại"
+        title="Unable to load sample data"
+        description="This is an error preview. You can try again now."
+        action="Try again"
         onAction={onRetry}
         tone="error"
       />
@@ -285,7 +283,7 @@ function PreviewBoundary({
 
 function LoadingState() {
   return (
-    <div className="loading-grid" aria-label="Đang tải dữ liệu">
+    <div className="loading-grid" aria-label="Loading data">
       <div className="skeleton-card wide" />
       <div className="skeleton-card" />
       <div className="skeleton-card" />
@@ -349,8 +347,8 @@ function OverviewPage({
     <div className="page-stack">
       <div className="section-toolbar">
         <div>
-          <h2>Tổng quan vận hành</h2>
-          <p>Số liệu được tính từ cùng bộ fixture trong khoảng đã chọn.</p>
+          <h2>Operations overview</h2>
+          <p>Metrics use the same sample dataset for the selected period.</p>
         </div>
         <div className="segmented">
           <button
@@ -358,36 +356,36 @@ function OverviewPage({
             className={days === 7 ? "active" : ""}
             onClick={() => setDays(7)}
           >
-            7 ngày
+            7 days
           </button>
           <button
             type="button"
             className={days === 30 ? "active" : ""}
             onClick={() => setDays(30)}
           >
-            30 ngày
+            30 days
           </button>
         </div>
       </div>
       <div className="stat-grid">
         <StatCard
-          label="Tổng người chơi"
+          label="Total players"
           value={players.length.toString()}
-          hint={`${players.filter((item) => item.status === "ACTIVE").length} đang hoạt động`}
+          hint={`${players.filter((item) => item.status === "ACTIVE").length} active`}
           icon="♙"
           tone="violet"
         />
         <StatCard
-          label="Trận thắng"
+          label="Battles won"
           value={won.toString()}
-          hint={`${visibleBattles.length ? Math.round((won / visibleBattles.length) * 100) : 0}% số trận`}
+          hint={`${visibleBattles.length ? Math.round((won / visibleBattles.length) * 100) : 0}% of battles`}
           icon="✓"
           tone="green"
         />
         <StatCard
-          label="Trận thua"
+          label="Battles lost"
           value={lost.toString()}
-          hint={`${visibleBattles.length} trận trong kỳ`}
+          hint={`${visibleBattles.length} battles in this period`}
           icon="×"
           tone="orange"
         />
@@ -395,10 +393,10 @@ function OverviewPage({
       <section className="card">
         <div className="card-header">
           <div>
-            <h2>Hoạt động gần đây</h2>
-            <p>Các trận mới nhất trong khoảng {days} ngày</p>
+            <h2>Recent activity</h2>
+            <p>Latest battles in the last {days} days</p>
           </div>
-          <span className="record-count">{visibleBattles.length} bản ghi</span>
+          <span className="record-count">{visibleBattles.length} records</span>
         </div>
         <BattleTable battles={visibleBattles.slice(0, 6)} onOpen={onOpen} />
       </section>
@@ -450,10 +448,10 @@ function PlayersPage({
     <section className="card">
       <div className="card-header">
         <div>
-          <h2>Danh sách người chơi</h2>
-          <p>Tài khoản và tiến trình trong dữ liệu mẫu</p>
+          <h2>Player list</h2>
+          <p>Accounts and progress from sample data</p>
         </div>
-        <span className="record-count">{filtered.length} người chơi</span>
+        <span className="record-count">{filtered.length} players</span>
       </div>
       <div className="filters">
         <label className="search-field">
@@ -461,8 +459,8 @@ function PlayersPage({
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Tìm tên, email hoặc ID"
-            aria-label="Tìm người chơi"
+            placeholder="Search name, email, or ID"
+            aria-label="Search players"
           />
         </label>
         <select
@@ -470,11 +468,11 @@ function PlayersPage({
           onChange={(event) =>
             setStatus(event.target.value as "ALL" | PlayerStatus)
           }
-          aria-label="Lọc trạng thái"
+          aria-label="Filter by status"
         >
-          <option value="ALL">Mọi trạng thái</option>
-          <option value="ACTIVE">Đang hoạt động</option>
-          <option value="LOCKED">Đã khóa</option>
+          <option value="ALL">All statuses</option>
+          <option value="ACTIVE">Active</option>
+          <option value="LOCKED">Locked</option>
         </select>
       </div>
       {filtered.length ? (
@@ -482,13 +480,13 @@ function PlayersPage({
           <table>
             <thead>
               <tr>
-                <th>Người chơi</th>
+                <th>Player</th>
                 <th>Level</th>
-                <th>Stage cao nhất</th>
-                <th>Trạng thái</th>
-                <th>Hoạt động cuối</th>
+                <th>Highest stage</th>
+                <th>Status</th>
+                <th>Last active</th>
                 <th>
-                  <span className="sr-only">Thao tác</span>
+                  <span className="sr-only">Actions</span>
                 </th>
               </tr>
             </thead>
@@ -513,7 +511,7 @@ function PlayersPage({
                       type="button"
                       onClick={() => onOpen(player)}
                     >
-                      Xem
+                      View
                     </button>
                   </td>
                 </tr>
@@ -546,8 +544,8 @@ function HeroesPage({
     <section className="card">
       <div className="card-header">
         <div>
-          <h2>Nội dung Hero</h2>
-          <p>Chỉnh sửa bản mẫu; reload sẽ khôi phục dữ liệu</p>
+          <h2>Hero content</h2>
+          <p>Edit sample content; reloading restores the data</p>
         </div>
         <span className="record-count">{filtered.length} Hero</span>
       </div>
@@ -557,16 +555,16 @@ function HeroesPage({
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Tìm Hero"
-            aria-label="Tìm Hero"
+            placeholder="Search heroes"
+            aria-label="Search heroes"
           />
         </label>
         <select
           value={element}
           onChange={(event) => setElement(event.target.value)}
-          aria-label="Lọc nguyên tố"
+          aria-label="Filter by element"
         >
-          <option value="ALL">Mọi nguyên tố</option>
+          <option value="ALL">All elements</option>
           {["Fire", "Water", "Nature", "Light", "Dark"].map((value) => (
             <option key={value}>{value}</option>
           ))}
@@ -578,12 +576,12 @@ function HeroesPage({
             <thead>
               <tr>
                 <th>Hero</th>
-                <th>Nguyên tố</th>
-                <th>Vai trò</th>
-                <th>Trạng thái</th>
-                <th>Cập nhật</th>
+                <th>Element</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Updated</th>
                 <th>
-                  <span className="sr-only">Thao tác</span>
+                  <span className="sr-only">Actions</span>
                 </th>
               </tr>
             </thead>
@@ -608,7 +606,7 @@ function HeroesPage({
                       type="button"
                       onClick={() => onEdit(hero)}
                     >
-                      Chỉnh sửa
+                      Edit
                     </button>
                   </td>
                 </tr>
@@ -638,18 +636,18 @@ function StagesPage({
     <section className="card">
       <div className="card-header">
         <div>
-          <h2>Màn chơi Campaign</h2>
-          <p>Thứ tự, loại và phần thưởng Gold mẫu</p>
+          <h2>Campaign stages</h2>
+          <p>Sample stage order, types, and gold rewards</p>
         </div>
-        <span className="record-count">{filtered.length} màn</span>
+        <span className="record-count">{filtered.length} stages</span>
       </div>
       <div className="filters compact">
         <select
           value={type}
           onChange={(event) => setType(event.target.value)}
-          aria-label="Lọc loại màn"
+          aria-label="Filter by stage type"
         >
-          <option value="ALL">Mọi loại màn</option>
+          <option value="ALL">All stage types</option>
           {["Tutorial", "Normal", "Elite", "Boss"].map((value) => (
             <option key={value}>{value}</option>
           ))}
@@ -659,13 +657,13 @@ function StagesPage({
         <table>
           <thead>
             <tr>
-              <th>Thứ tự</th>
-              <th>Màn chơi</th>
-              <th>Loại</th>
+              <th>Order</th>
+              <th>Stage</th>
+              <th>Type</th>
               <th>Gold reward</th>
-              <th>Trạng thái</th>
+              <th>Status</th>
               <th>
-                <span className="sr-only">Thao tác</span>
+                <span className="sr-only">Actions</span>
               </th>
             </tr>
           </thead>
@@ -680,7 +678,7 @@ function StagesPage({
                   <small>{stage.id}</small>
                 </td>
                 <td>{stage.type}</td>
-                <td>{stage.goldReward.toLocaleString("vi-VN")}</td>
+                <td>{stage.goldReward.toLocaleString("en-US")}</td>
                 <td>
                   <StatusBadge value={stage.status} />
                 </td>
@@ -690,7 +688,7 @@ function StagesPage({
                     type="button"
                     onClick={() => onEdit(stage)}
                   >
-                    Chỉnh sửa
+                    Edit
                   </button>
                 </td>
               </tr>
@@ -717,10 +715,10 @@ function BattlesPage({
     <section className="card">
       <div className="card-header">
         <div>
-          <h2>Nhật ký trận đấu</h2>
-          <p>Dữ liệu chỉ đọc để theo dõi kết quả mẫu</p>
+          <h2>Battle log</h2>
+          <p>Read-only sample battle results</p>
         </div>
-        <span className="record-count">{filtered.length} trận</span>
+        <span className="record-count">{filtered.length} battles</span>
       </div>
       <div className="filters compact">
         <select
@@ -728,12 +726,12 @@ function BattlesPage({
           onChange={(event) =>
             setResult(event.target.value as "ALL" | BattleResult)
           }
-          aria-label="Lọc kết quả"
+          aria-label="Filter by result"
         >
-          <option value="ALL">Mọi kết quả</option>
-          <option value="WON">Chiến thắng</option>
-          <option value="LOST">Thất bại</option>
-          <option value="ABANDONED">Đã rời trận</option>
+          <option value="ALL">All results</option>
+          <option value="WON">Won</option>
+          <option value="LOST">Lost</option>
+          <option value="ABANDONED">Abandoned</option>
         </select>
       </div>
       <BattleTable battles={filtered} onOpen={onOpen} />
@@ -754,14 +752,14 @@ function BattleTable({
       <table>
         <thead>
           <tr>
-            <th>Trận</th>
-            <th>Người chơi</th>
+            <th>Battle</th>
+            <th>Player</th>
             <th>Stage</th>
-            <th>Kết quả</th>
-            <th>Số lượt</th>
-            <th>Thời gian</th>
+            <th>Result</th>
+            <th>Turns</th>
+            <th>Time</th>
             <th>
-              <span className="sr-only">Thao tác</span>
+              <span className="sr-only">Actions</span>
             </th>
           </tr>
         </thead>
@@ -784,7 +782,7 @@ function BattleTable({
                   type="button"
                   onClick={() => onOpen(battle)}
                 >
-                  Chi tiết
+                  Details
                 </button>
               </td>
             </tr>
@@ -799,21 +797,21 @@ function InlineEmpty() {
   return (
     <div className="inline-empty">
       <span>⌕</span>
-      <strong>Không có kết quả phù hợp</strong>
-      <p>Thử thay đổi từ khóa hoặc bộ lọc.</p>
+      <strong>No matching results</strong>
+      <p>Try a different search term or filter.</p>
     </div>
   );
 }
 
 function StatusBadge({ value }: { value: string }) {
   const labels: Record<string, string> = {
-    ACTIVE: "Hoạt động",
-    LOCKED: "Đã khóa",
-    PUBLISHED: "Đã phát hành",
-    DRAFT: "Bản nháp",
-    WON: "Chiến thắng",
-    LOST: "Thất bại",
-    ABANDONED: "Đã rời",
+    ACTIVE: "Active",
+    LOCKED: "Locked",
+    PUBLISHED: "Published",
+    DRAFT: "Draft",
+    WON: "Won",
+    LOST: "Lost",
+    ABANDONED: "Abandoned",
   };
   return (
     <span className={`status-badge status-${value.toLowerCase()}`}>
@@ -854,13 +852,13 @@ function DetailPanel({
       >
         <div className="panel-header">
           <div>
-            <p>Chi tiết mẫu</p>
+            <p>Sample details</p>
             <h2 id="panel-title">{panelTitle(panel)}</h2>
           </div>
           <button
             className="icon-button"
             type="button"
-            aria-label="Đóng panel"
+            aria-label="Close panel"
             onClick={onClose}
           >
             ×
@@ -930,16 +928,16 @@ function PlayerDetail({
           <dd>{player.level}</dd>
         </div>
         <div>
-          <dt>Stage cao nhất</dt>
+          <dt>Highest stage</dt>
           <dd>Stage {player.highestStage}</dd>
         </div>
         <div>
-          <dt>Hoạt động cuối</dt>
+          <dt>Last active</dt>
           <dd>{formatDateTime(player.lastActive)}</dd>
         </div>
       </dl>
       <div className="notice">
-        Thao tác này chỉ đổi dữ liệu trong bộ nhớ prototype.
+        This action only changes data in prototype memory.
       </div>
       <button
         className={
@@ -949,8 +947,8 @@ function PlayerDetail({
         onClick={onToggle}
       >
         {player.status === "ACTIVE"
-          ? "Khóa tài khoản mẫu"
-          : "Mở khóa tài khoản mẫu"}
+          ? "Lock demo account"
+          : "Unlock demo account"}
       </button>
     </div>
   );
@@ -969,12 +967,12 @@ function HeroEditor({
   const submit = (event: FormEvent) => {
     event.preventDefault();
     if (draft.name.trim())
-      onSave({ ...draft, name: draft.name.trim(), updatedAt: "22/09/2026" });
+      onSave({ ...draft, name: draft.name.trim(), updatedAt: "09/22/2026" });
   };
   return (
     <form className="panel-body editor-form" onSubmit={submit}>
       <label>
-        Tên Hero
+        Hero name
         <input
           required
           value={draft.name}
@@ -982,7 +980,7 @@ function HeroEditor({
         />
       </label>
       <label>
-        Nguyên tố
+        Element
         <select
           value={draft.element}
           onChange={(event) =>
@@ -998,7 +996,7 @@ function HeroEditor({
         </select>
       </label>
       <label>
-        Vai trò
+        Role
         <select
           value={draft.role}
           onChange={(event) =>
@@ -1011,26 +1009,27 @@ function HeroEditor({
         </select>
       </label>
       <label>
-        Trạng thái
+        Status
         <select
           value={draft.status}
           onChange={(event) =>
             setDraft({ ...draft, status: event.target.value as Hero["status"] })
           }
         >
-          <option value="DRAFT">Bản nháp</option>
-          <option value="PUBLISHED">Đã phát hành</option>
+          <option value="DRAFT">Draft</option>
+          <option value="PUBLISHED">Published</option>
         </select>
       </label>
       <div className="notice">
-        Đây là form UI mẫu, chưa có quy trình publish hoặc validation từ server.
+        This is a sample form. Server validation and publishing are not
+        connected yet.
       </div>
       <div className="form-actions">
         <button className="secondary-action" type="button" onClick={onCancel}>
-          Hủy
+          Cancel
         </button>
         <button className="primary-button" type="submit">
-          Lưu bản mẫu
+          Save sample
         </button>
       </div>
     </form>
@@ -1055,7 +1054,7 @@ function StageEditor({
   return (
     <form className="panel-body editor-form" onSubmit={submit}>
       <label>
-        Tên màn chơi
+        Stage name
         <input
           required
           value={draft.name}
@@ -1063,7 +1062,7 @@ function StageEditor({
         />
       </label>
       <label>
-        Loại
+        Type
         <select
           value={draft.type}
           onChange={(event) =>
@@ -1088,7 +1087,7 @@ function StageEditor({
         />
       </label>
       <label>
-        Trạng thái
+        Status
         <select
           value={draft.status}
           onChange={(event) =>
@@ -1098,17 +1097,19 @@ function StageEditor({
             })
           }
         >
-          <option value="DRAFT">Bản nháp</option>
-          <option value="PUBLISHED">Đã phát hành</option>
+          <option value="DRAFT">Draft</option>
+          <option value="PUBLISHED">Published</option>
         </select>
       </label>
-      <div className="notice">Dữ liệu thay đổi sẽ mất khi reload trang.</div>
+      <div className="notice">
+        Changes will be lost when the page is reloaded.
+      </div>
       <div className="form-actions">
         <button className="secondary-action" type="button" onClick={onCancel}>
-          Hủy
+          Cancel
         </button>
         <button className="primary-button" type="submit">
-          Lưu bản mẫu
+          Save sample
         </button>
       </div>
     </form>
@@ -1122,7 +1123,7 @@ function BattleDetail({ battle }: { battle: Battle }) {
         <StatusBadge value={battle.result} />
         <strong>{battle.player}</strong>
         <span>
-          {battle.stage} · {battle.turns} lượt
+          {battle.stage} · {battle.turns} turns
         </span>
       </div>
       <dl className="detail-list">
@@ -1131,20 +1132,21 @@ function BattleDetail({ battle }: { battle: Battle }) {
           <dd>{battle.id}</dd>
         </div>
         <div>
-          <dt>Người chơi</dt>
+          <dt>Player</dt>
           <dd>{battle.player}</dd>
         </div>
         <div>
-          <dt>Màn chơi</dt>
+          <dt>Stage</dt>
           <dd>{battle.stage}</dd>
         </div>
         <div>
-          <dt>Thời gian</dt>
+          <dt>Time</dt>
           <dd>{formatDateTime(battle.playedAt)}</dd>
         </div>
       </dl>
       <div className="notice">
-        Nhật ký trận ở prototype chỉ đọc và không chứa action sequence thật.
+        Prototype battle logs are read-only and do not contain real action
+        sequences.
       </div>
     </div>
   );
@@ -1180,7 +1182,7 @@ function ConfirmDialog({
         <p>{message}</p>
         <div className="form-actions">
           <button className="secondary-action" type="button" onClick={onCancel}>
-            Hủy
+            Cancel
           </button>
           <button
             className={danger ? "danger-button" : "primary-button"}
@@ -1200,7 +1202,7 @@ function Toast({ message, onClose }: { message: string; onClose: () => void }) {
     <div className="toast" role="status">
       <span>✓</span>
       <p>{message}</p>
-      <button type="button" aria-label="Đóng thông báo" onClick={onClose}>
+      <button type="button" aria-label="Dismiss notification" onClick={onClose}>
         ×
       </button>
     </div>

@@ -76,6 +76,43 @@ async function login(browser: Browser, address: string) {
   assert.equal(res.status, 200); return res;
 }
 
+test('player onboarding persists once, rejects duplicate names and supports avatar changes', async () => {
+  const a = new Browser(), b = new Browser();
+  const first = await register(a); const second = await register(b);
+  await login(a, first.email); await login(b, second.email);
+  assert.equal((await (await a.request('/me')).json()).user.onboardingState, 'NEEDS_PROFILE');
+  assert.equal((await a.request('/../players/me/home')).status, 403);
+  const name = 'Ánh' + randomUUID().slice(0, 8);
+  const body = { playerName: name };
+  const results = await Promise.all([a.request('/../players/me/onboarding', 'POST', body), b.request('/../players/me/onboarding', 'POST', body)]);
+  assert.deepEqual(results.map(r => r.status).sort(), [200, 409]);
+  const winner = results[0]!.status === 200 ? a : b;
+  const created = (await results.find(r => r.status === 200)!.json()).user;
+  assert.equal(created.onboardingState, 'READY');
+  assert.equal(created.player.avatarKey, 'crystal-dragon');
+  const replay = (await (await winner.request('/../players/me/onboarding', 'POST', body)).json()).user;
+  assert.deepEqual(replay.player, created.player);
+  assert.equal((await winner.request('/../players/me/onboarding', 'POST', { playerName: 'OtherName' })).status, 409);
+  assert.equal((await winner.request('/../players/me/avatar', 'POST', { avatarKey: 'invalid' })).status, 400);
+  assert.equal((await winner.request('/../players/me/avatar', 'POST', { avatarKey: 'moon' })).status, 200);
+  assert.equal((await (await winner.request('/../players/me/home')).json()).player.avatarKey, 'moon');
+  assert.equal((await (await winner.request('/me')).json()).user.player.playerName, name);
+  await winner.request('/logout', 'POST', {});
+  assert.equal((await winner.request('/../players/me/home')).status, 401);
+});
+
+test('two sessions of one account cannot overwrite onboarding; invalid input and origins are rejected', async () => {
+  const a = new Browser(), b = new Browser(); const user = await register(a);
+  await login(a, user.email); await login(b, user.email);
+  for (const playerName of ['ab', 'admin', 'A\nB', '🙂🙂🙂', '1\u0301ab']) {
+    assert.equal((await a.request('/../players/me/onboarding', 'POST', { playerName })).status, 400);
+  }
+  assert.equal((await a.request('/../players/me/onboarding', 'POST', { playerName: 'OkayName', userId: user.id })).status, 400);
+  assert.equal((await a.request('/../players/me/onboarding', 'POST', { playerName: 'OkayName' }, 'https://other.invalid')).status, 403);
+  const replies = await Promise.all([a.request('/../players/me/onboarding', 'POST', { playerName: 'A' + randomUUID().slice(0,8) }), b.request('/../players/me/onboarding', 'POST', { playerName: 'B' + randomUUID().slice(0,8) })]);
+  assert.deepEqual(replies.map(r => r.status).sort(), [200, 409]);
+});
+
 before(async () => { db = new PrismaService(); await db.$connect(); });
 beforeEach(async () => {
   const module = await Test.createTestingModule({ imports: [AppModule] }).overrideProvider(GoogleProvider)
@@ -244,5 +281,5 @@ test('secure cookies follow HTTPS settings; rate limiter remains bounded and fai
   const browser = new Browser(), address = email(); await register(browser, address);
   assert.match((await login(browser, address)).headers.get('set-cookie')!, /; Secure/);
   const limiter = app.get(AuthSecurity); limiter.limit('isolated', 1, 10000);
-  assert.throws(() => limiter.limit('isolated', 1, 10000), /thao tác quá nhanh/);
+  assert.throws(() => limiter.limit('isolated', 1, 10000), /Too many requests/);
 });

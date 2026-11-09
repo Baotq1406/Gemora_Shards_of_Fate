@@ -18,7 +18,7 @@
     "db:migrate:apply": "prisma migrate deploy",
     "db:status": "prisma migrate status",
     "db:check": "tsx scripts/check-db.ts",
-    "test:db": "tsx --test test/database.integration.test.ts",
+    "test:db": "tsx --test test/database.integration.test.ts test/onboarding.database.test.mjs",
     "test:auth": "tsx --test test/auth.integration.test.ts test/google.provider.test.ts"
   },
   "dependencies": {
