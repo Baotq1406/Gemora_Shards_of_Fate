@@ -8,12 +8,20 @@ dist-ssr/
 build/
 coverage/
 playwright-report/
+blob-report/
 test-results/
+# Playwright authentication state can contain cookies and access tokens
+**/playwright/.auth/
 .nyc_output/
 .vite/
+.vite-temp/
 .cache/
 .turbo/
+.eslintcache
+.prettiercache
 *.tsbuildinfo
+# Temporary modules created while loading Vite configuration
+vite.config.*.timestamp-*
 
 # Logs and local process files
 logs/
@@ -69,6 +77,10 @@ id_ed25519
 .DS_Store
 Thumbs.db
 Desktop.ini
+# Office lock files; keep the actual documents
+~$*.docx
+~$*.xlsx
+~$*.pptx
 *.tmp
 *.temp
 *.swp

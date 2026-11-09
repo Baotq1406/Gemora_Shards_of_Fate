@@ -5,6 +5,8 @@ import { AuthSecurity, readToken } from '../auth/auth.security.js';
 import { SessionGuard, type AuthenticatedRequest } from '../auth/session.guard.js';
 import { objectInput } from '../auth/auth.validation.js';
 import { PrismaService } from '../database/prisma.service.js';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiContract, avatarKey as avatarSchema, homeResponse, object, onboardingBody, playerSchema, userResponse } from '../api-contracts.js';
 
 const avatars = ['crystal-dragon', 'moon', 'sun', 'leaf', 'crystal'];
 function fail(status: number, code: string, message: string): never { throw new HttpException({ code, message }, status); }
@@ -20,11 +22,13 @@ function nameInput(value: unknown): string {
 }
 
 @Controller('players/me')
+@ApiTags('Players')
 @UseGuards(AuthSecurity, SessionGuard)
 class PlayersController {
   constructor(@Inject(PrismaService) private readonly db: PrismaService, @Inject(AuthService) private readonly auth: AuthService) {}
 
   @Get('home')
+  @ApiContract('Xem dữ liệu Home', { session: true, response: homeResponse, errors: [401, 403, 429] })
   home(@Req() req: AuthenticatedRequest) {
     const user = publicUser(req.auth.user);
     if (!user.player) fail(403, 'PROFILE_REQUIRED', 'Create your player first.');
@@ -32,9 +36,11 @@ class PlayersController {
   }
 
   @Post('onboarding') @HttpCode(200)
+  @ApiContract('Tạo nhân vật', { session: true, body: onboardingBody, response: userResponse, description: 'Avatar mặc định crystal-dragon. Gửi lại cùng tên chuẩn hóa và avatar trả thành công. Không thể đổi tên đã xác nhận. Lỗi: INVALID_PLAYER_NAME, PLAYER_NAME_RESERVED, INVALID_AVATAR, PLAYER_NAME_TAKEN, PROFILE_ALREADY_COMPLETED.', errors: [400, 401, 403, 409, 413, 429] })
   onboarding(@Body() body: unknown, @Req() req: AuthenticatedRequest) { return this.save(body, req, false); }
 
   @Post('avatar') @HttpCode(200)
+  @ApiContract('Đổi avatar nhân vật', { session: true, body: object({ avatarKey: avatarSchema }), response: object({ player: playerSchema }), description: 'Yêu cầu đã tạo nhân vật. Lỗi nghiệp vụ: INVALID_AVATAR hoặc PROFILE_REQUIRED.', errors: [400, 401, 403, 413, 429] })
   changeAvatar(@Body() body: unknown, @Req() req: AuthenticatedRequest) { return this.save(body, req, true); }
 
   private async save(body: unknown, req: AuthenticatedRequest, avatarOnly: boolean) {

@@ -1,5 +1,7 @@
 # Gemora: Shards of Fate
 
+**Bắt đầu tại đây:** [Hướng dẫn chạy dự án trên Windows](docs/RUN_PROJECT.md) — cài đặt lần đầu, cấu hình database, chạy game/API/admin và xử lý lỗi thường gặp.
+
 Monorepo cho Gemora: Shards of Fate. Hiện dự án đã có prototype UI cho màn chào
 game, popup xác thực và Admin Dashboard. Backend đã có nền NestJS/Prisma và migration
 tài khoản và API đăng ký/đăng nhập. Popup xác thực đã kết nối API email/Google,

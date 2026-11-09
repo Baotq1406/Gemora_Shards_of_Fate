@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test:swagger": "playwright test --config swagger.playwright.config.mjs",
     "test:browser": "playwright test",
     "start": "npm run dev",
     "build": "npm run lint && tsc && vite build",

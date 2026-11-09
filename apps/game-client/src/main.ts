@@ -234,10 +234,8 @@ function renderLanding(): void {
     <main class="landing" aria-labelledby="game-title">
       <div class="landing-companion" aria-hidden="true"><img src="/art/gemora-baby-dragon.png" alt="" width="320" height="320" /></div>
       <section class="landing-content">
-        <div class="brand-mark"><span class="brand-gem"></span> A little world. A grand adventure.</div>
         <h1 class="game-title" id="game-title">GEMORA</h1>
         <p class="game-subtitle">Shards of Fate</p>
-        <p class="game-tagline">Match gems, gather heroes, and forge your fate.</p>
         <button class="play-button" id="play-now" type="button">Play Now</button>
         <p class="landing-note" id="account-status" aria-live="polite"></p>
         <div class="account-actions"></div>
@@ -510,7 +508,7 @@ function bindLanding(): void {
         ? "Checking your session…"
         : session.status === "error"
           ? session.message
-          : "Sign in to your Gemora account.";
+          : "";
   app.querySelector<HTMLElement>("#account-notice")!.textContent = notice;
   playButton!.disabled = mutationPending || session.status === "checking";
   playButton!.textContent =

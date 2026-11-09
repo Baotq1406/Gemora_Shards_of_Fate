@@ -105,27 +105,6 @@ input:focus-visible {
   width: 100%;
   height: auto;
 }
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 23px;
-  color: #75502e;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-.brand-gem {
-  width: 13px;
-  height: 17px;
-  flex-shrink: 0;
-  transform: rotate(35deg);
-  border: 2px solid #6d4189;
-  border-radius: 3px;
-  background: linear-gradient(135deg, #edc5ff 45%, #ac70dc 46%);
-  box-shadow: 2px 2px 0 #fff9e6;
-}
 .game-title {
   margin: 0;
   color: #ffda69;
@@ -141,20 +120,12 @@ input:focus-visible {
     0 7px 0 #e9b95e;
 }
 .game-subtitle {
-  margin: 15px 0 0;
+  margin: 15px 0 34px;
   color: #75502e;
   font-size: clamp(12px, 2vw, 17px);
   font-weight: 900;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-}
-.game-tagline {
-  max-width: 340px;
-  margin: 27px auto;
-  color: var(--ink);
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.6;
 }
 .play-button {
   position: relative;
@@ -548,9 +519,6 @@ body.modal-open {
   .game-title {
     letter-spacing: 0.04em;
   }
-  .game-tagline {
-    margin-top: 26px;
-  }
   .field input {
     font-size: 16px;
   }
@@ -604,17 +572,8 @@ button:disabled {
     padding: 34px 20px 29px;
     border-radius: 28px;
   }
-  .brand-mark {
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    gap: 7px;
-  }
   .game-title {
     font-size: clamp(54px, 14vw, 80px);
-  }
-  .game-tagline {
-    font-size: 16px;
-    margin-block: 24px;
   }
   .landing-companion {
     left: auto;

@@ -1,5 +1,7 @@
 # Chạy API đăng nhập Gemora và cấu hình Google
 
+Xem và thử API trực tiếp tại **http://localhost:8080/api/docs** khi backend và game client đang chạy. [Hướng dẫn Swagger và kiểm thử API](API_DOCS.md).
+
 API đăng ký bằng email, đăng nhập bằng mật khẩu, giữ phiên, đăng xuất và liên kết Google đã nối với giao diện game. Truy cập `http://localhost:8080` nhờ proxy của Vite; dùng thống nhất hostname này để Origin và cookie khớp cấu hình.
 
 ## Thử từ giao diện
@@ -54,7 +56,7 @@ Các đường dẫn sau dùng tiền tố `/api/v1/auth`. Gọi qua cùng origi
 | Method | Đường dẫn | Input và kết quả |
 |---|---|---|
 | GET | `/providers` | `{ password, google }` cho biết phương thức đã cấu hình |
-| POST | `/register` | `{ displayName, email, password }` → `201 { user }`, đăng nhập ở bước riêng |
+| POST | `/register` | `{ email, password, displayName? }` → `201 { user }`; `displayName` tùy chọn, không phải tên nhân vật; đăng nhập ở bước riêng |
 | POST | `/login` | `{ email, password }` → `200 { user }` và cookie phiên |
 | GET | `/me` | `200 { user }` nếu phiên còn hiệu lực, `401` nếu cần đăng nhập lại |
 | POST | `/logout` | `{}` → `204`, thu hồi phiên hiện tại và xóa cookie |

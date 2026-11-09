@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "test:docs": "npm run test:docs -w @gemora/game-server",
     "dev:server": "npm run dev -w @gemora/game-server",
     "build:server": "npm run build -w @gemora/game-server",
     "start:server": "npm run start -w @gemora/game-server",

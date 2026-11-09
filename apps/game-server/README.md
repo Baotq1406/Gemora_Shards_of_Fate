@@ -1,5 +1,7 @@
 # Gemora backend — bước nền database
 
+Trang xem và thử toàn bộ API: **http://localhost:8080/api/docs** (chạy backend và game client). Xem [hướng dẫn Swagger](../../docs/API_DOCS.md) để đăng nhập bằng cookie, thử API nhân vật và bật/tắt tài liệu.
+
 Đã có NestJS 12.3.2, Prisma ORM 7.10.1, PostgreSQL và API đăng ký, đăng nhập, quản lý phiên, Google. Giao diện vẫn ở giai đoạn prototype. Xem [hướng dẫn chạy API và cấu hình Google](../../docs/AUTH_SETUP.md). Các lệnh dưới đây dùng Node.js 24 và chạy từ **gốc repository**.
 
 ## 1. Chuẩn bị PostgreSQL một lần trên mỗi máy phát triển
