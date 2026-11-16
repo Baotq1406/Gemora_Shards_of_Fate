@@ -1,10 +1,23 @@
+import {
+  bindHomeAnimation,
+  homeMotionEnabled,
+  setHomeMotion,
+} from "./home-animation";
+import { companionPets } from "./companion-pets";
 import type { PlayerIdentity } from "@gemora/shared-types";
 import { errorMessage } from "../api/http";
 import "./player-preview.css";
 import "./cute-theme.css";
 import "./onboarding-frame.css";
+import "./home-landmarks.css";
+import { showFacility, type FacilityState } from "./home-facilities";
+import {
+  bindCampaign,
+  campaignMarkup,
+  type CampaignState,
+} from "../campaign/campaign";
 
-type Screen = "create-player" | "home";
+type Screen = "create-player" | "home" | "campaign";
 type SymbolName =
   | "gem"
   | "moon"
@@ -14,6 +27,8 @@ type SymbolName =
   | "map"
   | "bag"
   | "heroes"
+  | "monster"
+  | "pack"
   | "settings"
   | "arrow"
   | "lock"
@@ -32,6 +47,9 @@ const paths: Record<SymbolName, string> = {
     '<path d="m4 2 3 1 12 14-2 2L3 7 4 2Zm16 0-3 1-5 6m-3 3-4 5 2 2 5-4M3 15l6 6m6-18 6 6M2 22l4-4m12 0 4 4M15 21l6-6"/>',
   map: '<path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2V5Zm6-2v16m6-14v16"/>',
   bag: '<path d="M5 7h14l2 14H3L5 7Z"/><path d="M8 8V5a4 4 0 0 1 8 0v3M9 13h6"/>',
+  monster:
+    '<path d="M5 9 3 3l6 3h6l6-3-2 6v6a7 7 0 0 1-14 0V9Z"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="m9 17 3 2 3-2"/>',
+  pack: '<ellipse cx="12" cy="16" rx="6" ry="5"/><ellipse cx="4" cy="9" rx="2" ry="3"/><ellipse cx="9" cy="5" rx="2" ry="3"/><ellipse cx="15" cy="5" rx="2" ry="3"/><ellipse cx="20" cy="9" rx="2" ry="3"/>',
   heroes:
     '<circle cx="12" cy="7" r="3"/><path d="M6 21v-4a6 6 0 0 1 12 0v4M3 18v-3a4 4 0 0 1 3-4m15 7v-3a4 4 0 0 0-3-4"/>',
   settings:
@@ -55,7 +73,7 @@ const avatars: {
     key: "gem",
     name: "Crystal dragon",
     color: "dragon",
-    image: "/art/gemora-baby-dragon.png",
+    image: "/art/gemora-baby-dragon.webp",
   },
   {
     key: "moon",
@@ -113,18 +131,41 @@ export function startPlayerPreview(
   let disposed = false;
   let busy = false;
   let closeDialog: (() => void) | undefined;
-  let completed = live?.justCreated || false;
   let hintIndex = 0;
+  let disposeCampaign: (() => void) | undefined;
+  let disposeHome: (() => void) | undefined;
+  const campaignState: CampaignState = { selected: 3, scrollTop: null };
 
   function change(next: Screen): void {
+    closeDialog?.();
     screen = next;
     const url = new URL(location.href);
     if (live) {
       url.pathname = "/" + screen;
       url.search = "";
     } else url.searchParams.set("preview", screen);
-    history.replaceState(null, "", url);
+    url.searchParams.delete("realm");
+    if (next === "campaign" && campaignState.realm) {
+      url.searchParams.set("realm", campaignState.realm);
+    }
+    history.pushState(null, "", url);
     render();
+  }
+
+  function restoreScreen(): void {
+    const target = live
+      ? location.pathname.slice(1)
+      : new URLSearchParams(location.search).get("preview");
+    if (live && !live.player) return;
+    if (
+      target === "home" ||
+      target === "campaign" ||
+      (!live && target === "create-player")
+    ) {
+      closeDialog?.();
+      screen = target;
+      render();
+    }
   }
 
   function previewNav(): string {
@@ -145,7 +186,7 @@ export function startPlayerPreview(
     return `<main class="g-world g-create g-create-compact">
       <header class="g-top">${brand()}</header>
       <div class="g-onboarding">
-        <div class="g-compact-companion"><p class="g-speech-bubble">Welcome to Gemora!</p><img src="/art/gemora-baby-dragon.png" alt="Baby crystal dragon waving hello"></div>
+        <div class="g-compact-companion"><p class="g-speech-bubble">Welcome to Gemora!</p><img src="/art/gemora-baby-dragon.webp" alt="Baby crystal dragon waving hello"></div>
         <section class="g-create-panel" aria-labelledby="create-title">
           <h1 id="create-title">What’s your name?</h1>
           <div class="g-avatar-center">${avatarButton()}</div>
@@ -162,27 +203,24 @@ export function startPlayerPreview(
     </main>`;
   }
 
+  const facilityState: FacilityState = { pet: 0, item: "blade", filter: "All" };
   function homeScreen(): string {
     const name = playerName || "Moonleaf";
-    return `<main class="g-world g-home">
-      <header class="g-top">${brand()}<div class="g-home-location">${svg("spark")} GEM ISLAND <span>SAFE ZONE</span></div><div class="g-top-actions"><div class="g-currency"><span>G</span><strong>1,250</strong><small>GOLD</small></div><button class="g-icon-button" data-info="Settings" aria-label="Settings">${svg("settings")}</button><button class="g-icon-button" data-info="Account" aria-label="Account">${svg("heroes")}</button></div></header>
-      <div class="g-lobby-body">
-        <aside class="g-lobby-left">
-          <button class="g-player-card" data-info="Player profile">${portrait()}<span><strong>${escape(name)}</strong><small>New adventurer</small><span class="g-level"><b>Lv. 01</b><i><em></em></i><small>0 / 100</small></span></span></button>
-          <section class="g-objective"><div class="g-mini-label">${svg("map")} YOUR JOURNEY</div><h2>First light</h2><p>Find the lost shard in Whispering Woods.</p><div><span class="g-objective-dot"></span> Clear stage 1–1 <span>0/1</span></div><button class="g-text-button" data-info="First quest">View quest ${svg("arrow")}</button></section>
-          <div class="g-tip">${svg("spark")}<p>Match gems to power up your team.</p></div>
-        </aside>
-        <section class="g-lobby-center" aria-label="Gem Island"><div class="g-sanctuary-label"><span>YOUR ADVENTURE STARTS HERE</span><h1>Gem Island</h1><p>A little home for big adventures.</p></div><button class="g-world-point" data-info="Crystal shrine" aria-label="Explore the shrine">${svg("gem")}<span>SHRINE</span></button><div class="g-lobby-companion"><p class="g-speech-bubble">${completed ? `Welcome, ${escape(name)}!` : `Welcome back, ${escape(name)}!`}</p><img class="g-lobby-mascot" src="/art/gemora-baby-dragon.png" alt="Baby crystal dragon companion"></div></section>
-        <aside class="g-play-modes" aria-label="Game modes">
-          <div class="g-mode-heading"><span>CHOOSE YOUR ADVENTURE</span><i></i> 01 / 02</div>
-          <button class="g-mode g-pve" data-info="Adventure PvE"><div class="g-mode-top"><span>CAMPAIGN</span><span class="g-mode-tag">CHAPTER I</span></div><div class="g-mode-emblem">${svg("map")}</div><div class="g-mode-copy"><span>EXPLORE THE WORLD</span><h2>Adventure <small>PvE</small></h2><p>New lands. New friends.</p></div><div class="g-mode-action">Start adventure ${svg("arrow")}</div></button>
-          <button class="g-mode g-pvp" data-info="Arena PvP"><div class="g-mode-top"><span>ARENA</span><span class="g-locked">${svg("lock")} COMING SOON</span></div><div class="g-pvp-main"><div class="g-mode-emblem">${svg("swords")}</div><div><h2>Arena <small>PvP</small></h2><p>Challenge other adventurers.</p></div></div></button>
-          <p class="g-mode-note">${svg("spark")} Your team. Your adventure.</p>
-        </aside>
-      </div>
-      <nav class="g-bottom-nav" aria-label="Game navigation"><button class="active" data-info="Home">${svg("gem")}<span>Home</span></button><button data-info="Team">${svg("heroes")}<span>Team</span></button><button data-info="Heroes">${svg("sun")}<span>Heroes</span></button><button data-info="Inventory">${svg("bag")}<span>Inventory</span></button><span class="g-nav-divider"></span><button data-info="Guide">${svg("map")}<span>Guide</span></button></nav>
-      <footer class="g-footer"><span>GEMORA <b>✦</b> SHARDS OF FATE</span><span>Preview · Sample player data</span></footer>
-    </main>`;
+    const landmarks = [
+      ["portal", "Adventure PvE", "Adventure", "PvE"],
+      ["pets", "Pets", "Pets", ""],
+      ["forge", "Forge", "Forge", ""],
+      ["arena", "Arena PvP", "Arena", "PvP · Soon"],
+    ];
+    const companion = (landmark: string): string => {
+      const pet = companionPets.find((pet) => pet.home.landmark === landmark);
+      if (!pet) return "";
+      return `<span class="h-companion-pet h-companion-${pet.id}" data-companion="${pet.id}"><img src="/art/companions/animated/${pet.id}-still-v1.webp" alt="${pet.name}, ${pet.element} dragon companion" draggable="false" width="256" height="256"><span class="h-pet-sprite" aria-hidden="true"></span></span>`;
+    };
+    return `<main class="g-world g-home h-home"><header class="h-header"><button class="h-profile" data-info="Player profile" aria-label="Player profile: ${escape(name)}">${portrait()}<strong>${escape(name)}</strong></button>${brand()}<div class="h-tools"><button data-info="Preview">Preview</button><button data-info="Settings" aria-label="Settings">${svg("settings")}</button><button data-info="Account" aria-label="Account">${svg("heroes")}</button></div></header>
+    <section class="h-scene" aria-label="Gem Island"><h1 class="h-location">Gem Island</h1><div class="h-island"><div class="h-landmarks">${landmarks.map(([id, action, label, sub]) => `<div class="h-landmark-slot h-slot-${id}"><button class="h-landmark h-${id}" data-info="${action}" aria-label="${action}"><svg class="h-hit" viewBox="0 0 100 100" aria-hidden="true"><polygon points="15,35 35,10 65,8 85,30 94,80 75,95 22,95 6,80"/></svg><span class="h-building"><img src="/art/home/${id}-v1.webp" srcset="/art/home/${id}-v1-small.webp 384w, /art/home/${id}-v1.webp 768w" sizes="(max-width:699px) 40vw, (max-width:1099px) 38vw, 28vw" width="768" height="768" alt="" draggable="false">${id === "arena" ? '<img class="h-lock" src="/art/campaign/island-lock-v1.webp" alt="" width="64" height="64">' : ""}<span class="h-sign"><strong>${label}</strong>${sub ? `<small>${sub}</small>` : ""}</span></span></button>${companion(id)}</div>`).join("")}</div></div>
+    <button class="h-quest" data-info="First quest" aria-label="First quest">${svg("map")} Quest</button></section>
+    <nav class="h-dock" aria-label="Game navigation">${["Team", "Monsters", "Guide"].map((label, i) => `<button data-info="${label}">${svg((["pack", "monster", "map"] as SymbolName[])[i])}<span>${label}</span></button>`).join("")}<button class="h-bag" data-info="Inventory" aria-label="Bag"><img src="/art/home/bag-v1-small.webp" alt="" width="64" height="64"><span>Bag</span></button></nav></main>`;
   }
 
   function openDialog(
@@ -215,7 +253,9 @@ export function startPlayerPreview(
       if (e.key === "Escape") close();
       if (e.key === "Tab") {
         const buttons = Array.from(
-          overlay.querySelectorAll<HTMLButtonElement>("button"),
+          overlay.querySelectorAll<HTMLElement>(
+            "button:not(:disabled), input:not(:disabled), a[href]",
+          ),
         );
         if (e.shiftKey && document.activeElement === buttons[0]) {
           e.preventDefault();
@@ -284,6 +324,56 @@ export function startPlayerPreview(
 
   function showInfo(title: string): void {
     if (title === "Home") return;
+    if (title === "Settings") {
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      openDialog(
+        `<h2 id="g-dialog-title">Settings</h2><label class="h-motion-setting"><span>Creature animations<small>${reduced ? "Reduced motion is enabled on your device." : "Bring your island companions to life."}</small></span><input type="checkbox" data-home-motion ${homeMotionEnabled() ? "checked" : ""} ${reduced ? "disabled" : ""}></label><button class="g-text-button" data-settings-account>Account</button><button class="g-text-button" data-settings-preview>About this preview</button>`,
+        (overlay, close) => {
+          overlay
+            .querySelector<HTMLInputElement>("[data-home-motion]")
+            ?.addEventListener("change", (event) =>
+              setHomeMotion((event.target as HTMLInputElement).checked),
+            );
+          overlay
+            .querySelector("[data-settings-account]")
+            ?.addEventListener("click", () => {
+              close();
+              showInfo("Account");
+            });
+          overlay
+            .querySelector("[data-settings-preview]")
+            ?.addEventListener("click", () => {
+              close();
+              showInfo("Preview");
+            });
+        },
+      );
+      return;
+    }
+    if (title === "Team" || title === "Monsters") {
+      openDialog(
+        `<span class="g-dialog-emblem">${svg(title === "Team" ? "pack" : "monster")}</span><h2 id="g-dialog-title">${title}</h2><p>${title === "Team" ? "Build your monster team. Team formation is coming soon." : "Your monster collection is coming soon. Visit Pets to preview monster upgrades."}</p>`,
+      );
+      return;
+    }
+    if (["Pets", "Forge", "Inventory"].includes(title)) {
+      showFacility(
+        title === "Inventory" ? "Bag" : (title as "Pets" | "Forge"),
+        openDialog,
+        facilityState,
+      );
+      return;
+    }
+    if (title === "Preview" || title === "First quest") {
+      openDialog(
+        `<h2 id="g-dialog-title">${title === "Preview" ? "Preview" : "First light"}</h2><p>${title === "Preview" ? "Progress, pets and items are samples. Battles and upgrades are coming soon." : "Sample quest · Explore Whispering Woods. Quest tracking and rewards are coming soon."}</p>`,
+      );
+      return;
+    }
+    if (title === "Adventure PvE") {
+      change("campaign");
+      return;
+    }
     if (live && title === "Account") {
       live.account();
       return;
@@ -308,9 +398,21 @@ export function startPlayerPreview(
   }
 
   function render(): void {
+    disposeHome?.();
+    disposeHome = undefined;
+    disposeCampaign?.();
+    disposeCampaign = undefined;
     root.innerHTML =
-      previewNav() +
-      (screen === "create-player" ? createScreen() : homeScreen());
+      (screen === "create-player" ? previewNav() : "") +
+      (screen === "create-player"
+        ? createScreen()
+        : screen === "campaign"
+          ? campaignMarkup()
+          : homeScreen());
+    if (screen === "home") disposeHome = bindHomeAnimation(root);
+    if (screen === "campaign") {
+      disposeCampaign = bindCampaign(root, campaignState, () => change("home"));
+    }
     if (live) {
       root
         .querySelectorAll(".g-currency, .g-level, .g-objective")
@@ -319,9 +421,9 @@ export function startPlayerPreview(
         if (el.textContent?.includes("Preview")) el.remove();
       });
       const action = root.querySelector(".g-mode-action");
-      if (action) action.textContent = "Coming soon";
+      if (action) action.textContent = "Open map";
       const tag = root.querySelector(".g-mode-tag");
-      if (tag) tag.textContent = "COMING SOON";
+      if (tag) tag.textContent = "MAP PREVIEW";
     }
     root
       .querySelectorAll<HTMLButtonElement>("[data-screen]")
@@ -393,14 +495,17 @@ export function startPlayerPreview(
           }
           return;
         }
-        completed = true;
         change("home");
       });
   }
   document.body.classList.toggle("gemora-live", !!live);
+  window.addEventListener("popstate", restoreScreen);
   render();
   return () => {
     disposed = true;
+    disposeHome?.();
+    disposeCampaign?.();
+    window.removeEventListener("popstate", restoreScreen);
     closeDialog?.();
     root.inert = false;
     document.body.classList.remove("gemora-preview", "gemora-live");

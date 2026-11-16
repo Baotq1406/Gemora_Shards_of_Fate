@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "assets:add": "node scripts/webp-assets.mjs",
+    "assets:build": "node scripts/webp-assets.mjs",
+    "assets:check": "node scripts/webp-assets.mjs --check",
     "test:docs": "npm run test:docs -w @gemora/game-server",
     "dev:server": "npm run dev -w @gemora/game-server",
     "build:server": "npm run build -w @gemora/game-server",

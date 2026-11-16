@@ -1,0 +1,280 @@
+/* Independent art layers: stable hit shapes, moving visuals, no baked islands. */
+.d-world-logo {
+  justify-content: center;
+  color: #ffc95d;
+  -webkit-text-stroke: 1px #89572d;
+  text-shadow: 0 2px #88542c;
+  letter-spacing: 1px;
+}
+.d-header .d-world-logo > svg {
+  display: block;
+  width: 30px;
+  height: 34px;
+  color: #9255b9;
+  fill: #c38be4;
+}
+.d-layered-world {
+  background: #5bd7e2 url("/art/campaign/world-sky-v2.webp") center / cover;
+  min-height: calc(100dvh - 76px);
+}
+.d-layered-world .d-world-scene {
+  width: min(100%, calc((100dvh - 76px) * 1.52));
+  aspect-ratio: 1.52;
+  max-width: 1600px;
+  padding: 0;
+}
+.d-layered-world .d-world-regions {
+  display: block;
+}
+.d-layered-world .d-world-regions li {
+  position: absolute;
+  left: var(--island-x);
+  top: var(--island-y);
+  width: var(--island-size);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.d-layered-world .d-world-regions li::after {
+  display: none;
+}
+.d-layered-world .d-island-label {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+  pointer-events: none;
+  display: block;
+  transform: none;
+  filter: none;
+}
+.d-layered-world .d-island-label::before {
+  display: none;
+}
+.d-layered-world .d-island-hit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.d-island-hit polygon {
+  fill: transparent;
+  pointer-events: fill;
+  cursor: pointer;
+}
+.d-island-visual {
+  display: block;
+  position: absolute;
+  inset: 0;
+  transition:
+    transform 200ms ease,
+    filter 200ms ease;
+  pointer-events: none;
+}
+.d-island-art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 8px #27576b35);
+}
+.d-layered-world .d-island-name {
+  position: absolute;
+  left: 50%;
+  bottom: 15%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 98%;
+  min-height: 48px;
+  border: 3px solid #986737;
+  border-radius: 14px;
+  padding: 8px 12px;
+  background: linear-gradient(#fff5d3, #f4d391);
+  box-shadow:
+    inset 0 2px #fffbe5,
+    0 4px #69432c;
+  pointer-events: auto;
+}
+.d-layered-world .d-island-name strong {
+  font-size: clamp(16px, 1.5vw, 23px);
+  white-space: normal;
+  text-align: left;
+}
+.d-layered-world .d-island-lock {
+  position: absolute;
+  left: 50%;
+  right: auto;
+  top: 43%;
+  transform: translateX(-50%);
+  width: clamp(56px, 6vw, 90px);
+  height: auto;
+}
+.d-layered-world .d-island-label:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.d-layered-world .d-island-label:focus-visible .d-island-name {
+  outline: 4px solid #fff5b1;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 8px #345b75;
+}
+.d-layered-world .d-island-label:focus-visible .d-island-visual {
+  filter: drop-shadow(0 0 7px #fff0b2);
+}
+.d-layered-world .d-world-bottom {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 16px;
+  padding: 0;
+  flex-direction: row;
+}
+.d-layered-world .d-world-bottom .d-gold {
+  width: auto;
+}
+.d-layered-world .d-guide-solo {
+  width: 78px;
+  height: 90px;
+}
+.d-campaign .d-world-route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.d-world-route path {
+  fill: none;
+  stroke: #fff0ac;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 1 13;
+  filter: drop-shadow(0 0 3px #ffdc6f);
+}
+@media (hover: hover) and (pointer: fine) {
+  .d-layered-world .d-island-label:hover .d-island-visual {
+    transform: translateY(-8px) scale(1.025);
+    filter: drop-shadow(0 0 7px var(--realm-color));
+  }
+  .d-layered-world .d-island-label.is-locked:hover .d-island-visual {
+    transform: translateY(-3px) scale(1.01);
+    filter: brightness(1.05);
+  }
+}
+.d-layered-world .d-island-label:active .d-island-visual {
+  transform: scale(0.99);
+}
+@media (max-width: 1000px) and (min-width: 701px) {
+  .d-layered-world .d-world-scene {
+    width: 100%;
+    margin-top: 30px;
+  }
+  .d-layered-world .d-island-name {
+    padding: 6px 8px;
+    gap: 5px;
+  }
+  .d-layered-world .d-island-name strong {
+    font-size: 16px;
+  }
+}
+@media (max-width: 700px) {
+  .d-layered-world {
+    background-size: auto 100%;
+    min-height: calc(100dvh - 84px);
+  }
+  .d-layered-world .d-world-scene {
+    width: 100%;
+    aspect-ratio: auto;
+    padding: 18px 12px 120px;
+  }
+  .d-layered-world .d-world-regions {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .d-layered-world .d-world-regions li {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 86%;
+    max-width: 420px;
+    transform: none;
+    align-self: flex-start;
+  }
+  .d-layered-world .d-world-regions li:nth-child(even) {
+    align-self: flex-end;
+  }
+  .d-layered-world .d-world-regions li:not(:last-child)::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 60%;
+    bottom: -28px;
+    height: 42px;
+    border-left: 4px dotted #fff0ac;
+    transform: rotate(-25deg);
+  }
+  .d-layered-world .d-island-name {
+    padding: 8px 10px;
+    bottom: 11%;
+    max-width: 100%;
+  }
+  .d-layered-world .d-island-name strong {
+    font-size: 20px;
+  }
+  .d-layered-world .d-island-lock {
+    top: 40%;
+    width: 64px;
+  }
+  .d-layered-world .d-world-route {
+    display: none;
+  }
+  .d-layered-world .d-world-bottom {
+    position: fixed;
+    z-index: 4;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 16px max(12px, env(safe-area-inset-bottom));
+    align-items: center;
+    background: linear-gradient(transparent, #c4eeebf5 30%);
+  }
+  .d-layered-world .d-guide-solo {
+    width: 60px;
+    height: 68px;
+  }
+  .d-header .d-world-logo {
+    font-size: 28px;
+    gap: 6px;
+  }
+  .d-header .d-world-logo > svg {
+    width: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .d-layered-world .d-island-visual {
+    transition: none;
+  }
+  .d-layered-world .d-island-label:hover .d-island-visual,
+  .d-layered-world .d-island-label:active .d-island-visual {
+    transform: none;
+  }
+}
+@media (max-width: 700px) {
+  .d-layered-world {
+    background-color: #5bd7e2;
+    background-image:
+      linear-gradient(to bottom, transparent 45%, #5bd7e2 95%),
+      url("/art/campaign/world-sky-v2.webp");
+    background-size:
+      100% 900px,
+      auto 900px;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
+}

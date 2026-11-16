@@ -1,0 +1,721 @@
+.h-home.g-world {
+  position: relative;
+  height: 100dvh;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  container: home / inline-size;
+  background: #82dce5;
+  color: #68452b;
+  padding: 0;
+  overflow: hidden;
+}
+.h-home::before,
+.h-home::after {
+  display: none;
+}
+.h-header {
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 20px;
+  background: linear-gradient(#fff3cf, #e7dca5);
+  border-bottom: 3px solid #ad8147;
+  position: relative;
+  z-index: 3;
+}
+.h-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: none;
+  color: #734c2c;
+  font: 800 15px var(--font-ui);
+  cursor: pointer;
+  min-height: 44px;
+}
+.h-profile strong {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.h-profile .g-avatar-circle {
+  width: 44px;
+  height: 44px;
+}
+.h-tools {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.h-tools button,
+.h-quest {
+  min-height: 44px;
+  min-width: 44px;
+  border: 2px solid #b98a4e;
+  border-radius: 12px;
+  padding: 7px 10px;
+  background: #fff2cb;
+  color: #755234;
+  font: 800 12px var(--font-ui);
+  cursor: pointer;
+}
+.h-tools .g-icon {
+  width: 20px;
+  height: 20px;
+}
+.h-scene {
+  position: relative;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  container: scene / size;
+  background: #82dce5;
+  isolation: isolate;
+}
+.h-island {
+  position: relative;
+  width: 100%;
+  height: max(650px, 100cqh);
+  background: url("/art/home/base-v1.webp") center / cover;
+  container: island / inline-size;
+}
+.h-location {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font: 21px var(--font-display);
+  color: #fff2b4;
+  text-shadow: 0 2px #7b572e;
+  pointer-events: none;
+}
+.h-landmarks {
+  position: absolute;
+  inset: 0 0 72px;
+}
+.h-landmark-slot {
+  position: absolute;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.h-landmark {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: none;
+}
+.h-slot-portal {
+  left: 22%;
+  top: 32%;
+  width: min(28%, 46cqh);
+}
+.h-slot-pets {
+  left: 49%;
+  top: 24%;
+  width: min(26%, 43cqh);
+}
+.h-slot-forge {
+  left: 25%;
+  top: 72%;
+  width: min(24%, 40cqh);
+}
+.h-slot-arena {
+  left: 80%;
+  top: 40%;
+  width: min(30%, 49cqh);
+}
+.h-building {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 90%;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+.h-building > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.h-hit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  overflow: visible;
+}
+.h-hit polygon {
+  fill: transparent;
+  pointer-events: fill;
+}
+.h-sign {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 17px;
+  min-height: 44px;
+  min-width: 88px;
+  white-space: nowrap;
+  background: linear-gradient(#fff5ce, #f2cf88);
+  border: 3px solid #9a6939;
+  border-radius: 13px;
+  box-shadow:
+    inset 0 2px #fffbe3,
+    0 4px #6f492a;
+  pointer-events: auto;
+  color: #6c4327;
+}
+.h-sign strong {
+  font: clamp(18px, 1.7vw, 24px) var(--font-display);
+}
+.h-sign small {
+  font: 800 10px var(--font-ui);
+}
+.h-building > img.h-lock {
+  position: absolute;
+  width: clamp(36px, 4vw, 60px);
+  height: auto;
+  left: 50%;
+  top: 53%;
+  transform: translateX(-50%);
+}
+.h-quest {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.h-quest .g-icon {
+  width: 19px;
+}
+.h-dock {
+  position: absolute;
+  left: 50%;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 5;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 3px 20px;
+  margin: 0;
+  border: 3px solid #ab7c42;
+  border-radius: 18px;
+  background: #fff0ca;
+  box-shadow: 0 3px #76512d;
+}
+.h-dock button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 62px;
+  min-height: 48px;
+  background: none;
+  border: 0;
+  color: #74502d;
+  font: 800 11px var(--font-ui);
+  cursor: pointer;
+}
+.h-dock .g-icon {
+  width: 23px;
+  height: 23px;
+}
+.h-dock .h-bag {
+  position: relative;
+  padding-top: 32px;
+}
+.h-bag img {
+  position: absolute;
+  bottom: 17px;
+  width: 52px;
+  height: 52px;
+  transition: transform 0.2s;
+}
+.h-home button:focus-visible {
+  outline: 3px solid #167c9a;
+  outline-offset: 4px;
+}
+.h-home .h-landmark:focus-visible {
+  outline: none;
+}
+.h-landmark:focus-visible .h-sign {
+  outline: 4px solid #fff4b9;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 8px #36596b;
+}
+.h-companion-pet {
+  position: absolute;
+  display: block;
+  width: var(--pet-size);
+  aspect-ratio: 1;
+  left: var(--pet-x);
+  top: var(--pet-y);
+  transform: translate(-50%, -93%);
+  pointer-events: none;
+}
+.h-companion-pet::before {
+  content: "";
+  position: absolute;
+  left: 23%;
+  right: 23%;
+  bottom: 1%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    #344b3660,
+    #39593620 45%,
+    transparent 72%
+  );
+}
+.h-companion-pet img {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.h-pet-sprite {
+  position: absolute;
+  inset: 0;
+  background-size: 400% 400%;
+  background-repeat: no-repeat;
+  visibility: hidden;
+}
+.h-companion-pet[data-ready] .h-pet-sprite {
+  visibility: visible;
+}
+.h-companion-pet[data-ready] > img {
+  visibility: hidden;
+}
+.h-companion-crystal {
+  --pet-size: clamp(130px, 11.5cqw, 152px);
+  --pet-x: 93%;
+  --pet-y: 120%;
+}
+.h-companion-leaf {
+  --pet-size: clamp(118px, 10.4cqw, 140px);
+  --pet-x: 103%;
+  --pet-y: 94%;
+}
+.h-companion-water {
+  --pet-size: clamp(118px, 10.4cqw, 140px);
+  --pet-x: 12%;
+  --pet-y: 118%;
+}
+.h-companion-fire {
+  --pet-size: clamp(98px, 8.4cqw, 116px);
+  --pet-x: 111%;
+  --pet-y: 61%;
+}
+.h-motion-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 20px 0;
+  text-align: left;
+}
+.h-motion-setting input {
+  width: 24px;
+  height: 24px;
+  accent-color: #8c62b0;
+}
+.h-motion-setting small {
+  display: block;
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 5px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .h-landmark:hover .h-building {
+    transform: scale(1.025);
+    filter: brightness(1.08) drop-shadow(0 0 6px #ffe2a877);
+  }
+  .h-arena:hover .h-building {
+    transform: scale(1.01);
+  }
+  .h-bag:hover img {
+    transform: translateY(-3px) rotate(-3deg);
+  }
+}
+.h-facility-dialog.g-dialog {
+  width: 760px;
+  max-width: calc(100vw - 24px);
+  max-height: 90dvh;
+  overflow: auto;
+  text-align: left;
+}
+.h-facility header {
+  padding-right: 40px;
+}
+.h-facility h2 {
+  margin-bottom: 8px;
+}
+.h-sample {
+  font-size: 12px;
+  color: #80604b;
+  background: #efe0f2;
+  padding: 5px 9px;
+  border-radius: 8px;
+}
+.h-facility-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-top: 22px;
+}
+.h-collection {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  align-content: start;
+}
+.h-collection button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 104px;
+  border: 2px solid #ceaa70;
+  border-radius: 13px;
+  background: #fff5da;
+  color: #735030;
+  padding: 10px 6px;
+  cursor: pointer;
+  font: 12px var(--font-ui);
+  gap: 5px;
+}
+.h-collection button[aria-pressed="true"] {
+  border-color: #9a63b8;
+  box-shadow: 0 0 0 2px #cca7de;
+  background: #f6e6ff;
+}
+.h-detail {
+  text-align: center;
+  background: #fff5d9;
+  border: 2px solid #dcb980;
+  border-radius: 18px;
+  padding: 18px;
+}
+.h-detail h3 {
+  font: 25px var(--font-display);
+  margin: 8px 0;
+}
+.h-detail p {
+  font-size: 13px;
+}
+.h-detail .g-primary {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 12px;
+}
+.h-detail .g-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.h-pet-portrait,
+.h-pet-thumb {
+  display: block;
+  background: url("/art/campaign/dragons.webp") var(--pet-position) center /
+    500% auto no-repeat;
+  width: 130px;
+  height: 165px;
+  margin: auto;
+}
+.h-pet-thumb {
+  width: 65px;
+  height: 76px;
+}
+.h-item-art,
+.h-item-icon {
+  display: grid;
+  place-items: center;
+  font-size: 65px;
+  color: #9266b3;
+  height: 100px;
+}
+.h-item-icon {
+  height: 50px;
+  font-size: 36px;
+}
+.h-stat {
+  display: flex;
+  justify-content: space-between;
+  border-block: 1px solid #dbc094;
+  padding: 10px 0;
+  font-size: 14px;
+}
+.h-stat b {
+  color: #618345;
+}
+.h-filters {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+.h-filters button {
+  min-height: 44px;
+  border: 2px solid #c8a06b;
+  background: #fff0c7;
+  border-radius: 10px;
+  padding: 7px 12px;
+  color: #6c482b;
+  cursor: pointer;
+}
+.h-filters button[aria-pressed="true"] {
+  background: #e6caf2;
+  border-color: #9f72b5;
+}
+.h-sample-note {
+  font-size: 11px;
+  text-align: center;
+  margin-bottom: 0;
+  color: #826647;
+}
+.h-facility button:focus-visible {
+  outline: 3px solid #8553a5;
+  outline-offset: 3px;
+}
+
+.h-pet-portrait,
+.h-pet-thumb {
+  background: none;
+  object-fit: contain;
+}
+.h-facility-dialog .g-dialog-close {
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+}
+@container home (max-width:1099px) {
+  .h-header {
+    padding: 7px 12px;
+  }
+  .h-header .g-brand {
+    transform: scale(0.85);
+  }
+  .h-island {
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: auto;
+    height: max(640px, 100cqh);
+    background-image: url("/art/home/compact-v1.webp");
+    background-size: 100% 112%;
+    background-position: top;
+  }
+  .h-slot-portal {
+    left: 22%;
+    top: 26%;
+    width: min(30%, max(200px, 31cqh));
+  }
+  .h-slot-pets {
+    left: 78%;
+    top: 26%;
+    width: min(30%, max(200px, 31cqh));
+  }
+  .h-slot-forge {
+    left: 22%;
+    top: 66%;
+    width: min(30%, max(200px, 31cqh));
+  }
+  .h-slot-arena {
+    left: 78%;
+    top: 66%;
+    width: min(30%, max(200px, 31cqh));
+  }
+  .h-companion-pet {
+    --pet-size: 118px;
+    --pet-x: 118%;
+    --pet-y: 102%;
+  }
+  .h-companion-crystal {
+    --pet-size: 124px;
+    --pet-x: -10%;
+  }
+  .h-companion-water {
+    --pet-x: -10%;
+  }
+  .h-companion-fire {
+    --pet-size: 98px;
+  }
+  .h-sign {
+    padding: 5px 12px;
+  }
+  .h-sign strong {
+    font-size: 21px;
+  }
+}
+@container home (max-width:699px) {
+  .h-header {
+    min-height: 64px;
+    gap: 4px;
+    padding: 5px 8px;
+  }
+  .h-header .g-brand {
+    transform: none;
+    margin: 0;
+  }
+  .h-header .g-brand > span {
+    font-size: 25px;
+  }
+  .h-header .g-brand small {
+    display: none;
+  }
+  .h-profile {
+    gap: 0;
+    padding: 0;
+  }
+  .h-profile strong {
+    display: none;
+  }
+  .h-profile .g-avatar-circle {
+    width: 38px;
+    height: 38px;
+  }
+  .h-tools {
+    gap: 4px;
+  }
+  .h-tools button {
+    padding: 5px;
+  }
+  .h-tools [data-info="Preview"],
+  .h-tools [data-info="Account"] {
+    display: none;
+  }
+  .h-island {
+    width: 100%;
+    min-width: 0;
+    min-height: 740px;
+    height: max(740px, 100cqh);
+    aspect-ratio: auto;
+    background-size: 100% 115%;
+  }
+  .h-slot-portal {
+    left: 25%;
+    top: 26%;
+    width: min(40%, 190px);
+  }
+  .h-slot-pets {
+    left: 75%;
+    top: 26%;
+    width: min(40%, 190px);
+  }
+  .h-slot-forge {
+    left: 25%;
+    top: 68%;
+    width: min(40%, 190px);
+  }
+  .h-slot-arena {
+    left: 75%;
+    top: 68%;
+    width: min(40%, 190px);
+  }
+  .h-companion-pet {
+    --pet-size: 100px;
+    --pet-x: 50%;
+    --pet-y: calc(100% + 110px);
+  }
+  .h-companion-crystal {
+    --pet-size: 110px;
+  }
+  .h-companion-fire {
+    --pet-size: 84px;
+  }
+  .h-sign {
+    min-width: 76px;
+    min-height: 44px;
+    padding: 4px 8px;
+    border-width: 2px;
+  }
+  .h-sign strong {
+    font-size: 17px;
+  }
+  .h-sign small {
+    font-size: 9px;
+  }
+  .h-building > img.h-lock {
+    width: 32px;
+  }
+  .h-location {
+    top: 18px;
+    right: 14px;
+    left: auto;
+    transform: none;
+    font-size: 20px;
+  }
+  .h-quest {
+    top: 9px;
+    left: 10px;
+  }
+  .h-dock {
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    justify-content: space-around;
+    gap: 2px;
+    margin: 0;
+    padding: 3px 8px;
+  }
+  .h-dock button {
+    min-width: 52px;
+  }
+}
+@media (max-width: 700px) {
+  .h-facility-body {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .h-collection {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .h-detail {
+    padding: 12px;
+  }
+  .h-pet-portrait {
+    width: 95px;
+    height: 115px;
+  }
+  .h-facility-dialog.g-dialog {
+    padding: 22px 16px;
+  }
+  .h-filters {
+    gap: 5px;
+  }
+  .h-filters button {
+    padding: 6px 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .h-building,
+  .h-bag img {
+    transition: none;
+  }
+  .h-landmark:hover .h-building,
+  .h-bag:hover img {
+    transform: none;
+  }
+}

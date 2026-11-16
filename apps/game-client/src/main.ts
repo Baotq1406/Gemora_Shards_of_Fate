@@ -116,8 +116,20 @@ function renderLanding(): void {
     gameReady = ready;
     gamePlayerKey = playerKey;
     uncertainCreate = false;
-    history.replaceState(null, "", ready ? "/home" : "/create-player");
-    gameDispose = startPlayerPreview(ready ? "home" : "create-player", {
+    const destination = ready
+      ? location.pathname === "/campaign"
+        ? "campaign"
+        : "home"
+      : "create-player";
+    const gameUrl = new URL(location.href);
+    const requestedRealm = gameUrl.searchParams.get("realm");
+    gameUrl.pathname = "/" + destination;
+    gameUrl.search = "";
+    if (destination === "campaign" && requestedRealm) {
+      gameUrl.searchParams.set("realm", requestedRealm);
+    }
+    history.replaceState(null, "", gameUrl);
+    gameDispose = startPlayerPreview(destination, {
       player: user.player,
       justCreated,
       account: openAccount,
@@ -232,7 +244,7 @@ function renderLanding(): void {
   if (location.pathname !== "/") history.replaceState(null, "", "/");
   app.innerHTML = `
     <main class="landing" aria-labelledby="game-title">
-      <div class="landing-companion" aria-hidden="true"><img src="/art/gemora-baby-dragon.png" alt="" width="320" height="320" /></div>
+      <div class="landing-companion" aria-hidden="true"><img src="/art/gemora-baby-dragon.webp" alt="" width="320" height="320" /></div>
       <section class="landing-content">
         <h1 class="game-title" id="game-title">GEMORA</h1>
         <p class="game-subtitle">Shards of Fate</p>

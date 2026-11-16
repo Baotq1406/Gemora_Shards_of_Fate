@@ -7,7 +7,7 @@
     "test:swagger": "playwright test --config swagger.playwright.config.mjs",
     "test:browser": "playwright test",
     "start": "npm run dev",
-    "build": "npm run lint && tsc && vite build",
+    "build": "node ../../scripts/webp-assets.mjs --check && npm run lint && tsc && vite build",
     "lint": "eslint .",
     "dev": "vite"
   },

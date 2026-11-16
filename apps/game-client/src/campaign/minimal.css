@@ -1,0 +1,486 @@
+/* Compact presentation layered over the shared campaign art and controls. */
+.d-header {
+  height: 76px;
+  gap: 16px;
+  padding: 10px 24px;
+}
+.d-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  margin: 0;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.1;
+}
+.d-header h1 > svg {
+  color: #96713e;
+}
+.d-back {
+  width: 48px;
+  padding: 10px;
+  flex-shrink: 0;
+}
+.d-header-right {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+.d-compact-progress {
+  font-weight: 900;
+  white-space: nowrap;
+}
+.d-preview-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 8px 10px;
+  color: #765532;
+  letter-spacing: 0;
+  font-size: 12px;
+}
+.d-preview-pill svg {
+  width: 16px;
+  height: 16px;
+}
+.d-world {
+  min-height: 0;
+}
+.d-world-scene {
+  min-height: 0;
+  max-height: none;
+  max-width: 1600px;
+  margin: auto;
+}
+.d-world-regions li {
+  transform: translate(-50%, -50%);
+}
+.d-island-label,
+.d-island-label.is-open {
+  position: relative;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  isolation: isolate;
+}
+.d-island-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 9px 12px;
+  border: 3px solid #986737;
+  border-radius: 14px;
+  background: linear-gradient(#fff5d3, #f4d391);
+  box-shadow:
+    inset 0 2px #fffbe5,
+    0 4px #69432c,
+    0 8px 15px #31543c40;
+}
+.d-island-name > svg {
+  color: var(--realm-color);
+  width: 22px;
+  height: 22px;
+}
+.d-island-name strong {
+  font: 21px/1.15 var(--font-display);
+  white-space: nowrap;
+}
+.d-island-count {
+  font-size: 12px;
+  font-weight: 900;
+  padding-left: 7px;
+  border-left: 1px solid #bda276;
+}
+.is-open .d-island-name {
+  outline: 3px solid #fff1a47a;
+  outline-offset: 2px;
+}
+.d-island-lock {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 3px #4e3c4560);
+}
+.d-island-label.is-locked::before {
+  content: "";
+  position: absolute;
+  width: 240px;
+  height: 145px;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse,
+    #e6e9f3b3 10%,
+    #e5e9ef70 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+.d-world-bottom {
+  align-items: flex-end;
+  pointer-events: none;
+}
+.d-world-bottom button {
+  pointer-events: auto;
+  min-width: 190px;
+}
+.d-guide-solo {
+  width: 100px;
+  height: 118px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 2px #45654460);
+}
+.d-region {
+  padding-bottom: 16px;
+}
+.d-realm-tabs {
+  padding: 14px 16px 16px;
+}
+.d-realm-tabs button {
+  min-width: 48px;
+  min-height: 48px;
+  justify-content: center;
+}
+.d-map-scroll {
+  width: calc(100% - 48px);
+  max-width: 1050px;
+  height: calc(100dvh - 168px);
+  min-height: 330px;
+  margin: 0 auto;
+}
+.d-map-controls {
+  position: absolute;
+  right: max(40px, calc((100% - 1050px) / 2 + 18px));
+  bottom: 34px;
+  padding: 0;
+}
+.d-map-controls button {
+  width: 48px;
+  padding: 10px;
+}
+.d-kind-seal {
+  position: absolute;
+  left: 4px;
+  top: -4px;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #ffe5ac;
+  background: #a67bb8;
+  color: #fff4d6;
+  border-radius: 9px;
+  box-shadow: 0 2px #795331;
+  display: grid;
+  place-items: center;
+  transform: rotate(-9deg);
+}
+.d-kind-seal svg {
+  width: 17px;
+  height: 17px;
+}
+.d-node.boss .d-kind-seal {
+  background: #c78a40;
+}
+.d-node[aria-pressed="true"] .d-node-gem {
+  outline: 3px solid #fff5bc;
+  outline-offset: 5px;
+}
+.d-dialog-close {
+  width: 48px;
+  min-height: 48px;
+}
+.d-rewards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.d-rewards > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 54px;
+  padding: 8px 5px;
+  border: 2px solid #dcb777;
+  border-radius: 12px;
+  background: #fff6da;
+  color: #69472d;
+}
+.d-rewards > button:hover {
+  background: #fffbea;
+}
+.d-rewards svg,
+.d-coin {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+.d-rewards strong {
+  font-size: 16px;
+}
+.d-rewards strong svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  color: #53834a;
+}
+.d-resource-help {
+  margin: 10px 0 0;
+  font-size: 12px;
+  text-align: center;
+}
+.d-resource-help:empty {
+  display: none;
+}
+.d-team-slots {
+  justify-content: center;
+  margin-top: 18px;
+}
+.d-lock-details {
+  padding: 44px 28px 28px;
+  text-align: center;
+}
+.d-lock-details .d-island-lock {
+  display: block;
+  margin: 0 auto 16px;
+  width: 112px;
+  height: 112px;
+}
+.d-lock-details p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 14px 0 22px;
+}
+.d-lock-details .d-gold {
+  width: 100%;
+}
+.d-preview-link {
+  display: block;
+  min-height: 48px;
+  margin: 12px auto 0;
+  padding: 8px 14px;
+  border: 0;
+  background: none;
+  color: #795a87;
+  text-decoration: underline;
+  font-weight: 800 !important;
+}
+@media (max-width: 1100px) and (min-width: 901px) {
+  .d-island-name strong {
+    font-size: 18px;
+  }
+  .d-island-name {
+    gap: 6px;
+    padding: 8px;
+  }
+  .d-island-lock {
+    width: 80px;
+    height: 80px;
+  }
+}
+@media (max-width: 900px) {
+  .d-world {
+    background: linear-gradient(#86e1e6, #d1f3e8);
+  }
+  .d-world-scene {
+    aspect-ratio: auto;
+    padding: 20px 16px 10px;
+  }
+  .d-world-art {
+    display: none;
+  }
+  .d-world-regions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .d-world-regions li {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+  }
+  .d-world-regions li::after {
+    display: none;
+  }
+  .d-world-regions li:first-child {
+    grid-column: 1 / -1;
+  }
+  .d-world-regions li:nth-child(1) {
+    --card-art: url("/art/campaign/nature.webp");
+  }
+  .d-world-regions li:nth-child(2) {
+    --card-art: url("/art/campaign/water.webp");
+  }
+  .d-world-regions li:nth-child(3) {
+    --card-art: url("/art/campaign/fire.webp");
+  }
+  .d-world-regions li:nth-child(4) {
+    --card-art: url("/art/campaign/light.webp");
+  }
+  .d-world-regions li:nth-child(5) {
+    --card-art: url("/art/campaign/dark.webp");
+  }
+  .d-island-label,
+  .d-island-label.is-open {
+    width: 100%;
+    height: 180px;
+    justify-content: flex-end;
+    align-items: stretch;
+    overflow: hidden;
+    padding: 0;
+    border: 3px solid #a77c48;
+    border-radius: 18px;
+    background: var(--card-art) center 20% / cover;
+    box-shadow:
+      inset 0 1px #fff2ca,
+      0 4px #8c663f;
+  }
+  .d-island-name {
+    border: 0;
+    border-top: 2px solid #c49b61;
+    border-radius: 0;
+    box-shadow: none;
+    background: #fff0ccef;
+  }
+  .d-island-name strong {
+    white-space: normal;
+    font-size: 21px;
+  }
+  .is-open .d-island-name {
+    outline: 0;
+  }
+  .d-island-count {
+    margin-left: auto;
+  }
+  .d-island-label .d-island-lock {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 64px;
+    height: 64px;
+  }
+  .d-island-label.is-locked::before {
+    left: auto;
+    right: -44px;
+    top: -14px;
+    transform: none;
+    width: 180px;
+    height: 130px;
+    z-index: 0;
+  }
+  .d-island-name,
+  .d-island-lock {
+    z-index: 1;
+  }
+  .d-world-bottom {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    padding: 12px 20px 24px;
+    flex-direction: row;
+    align-items: center;
+  }
+  .d-world-bottom .d-gold {
+    width: auto;
+  }
+  .d-guide-solo {
+    width: 76px;
+    height: 88px;
+  }
+}
+@media (max-width: 600px) {
+  .d-header {
+    height: 84px;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .d-header h1 {
+    font-size: 23px;
+  }
+  .d-header h1 > svg {
+    display: none;
+  }
+  .d-back {
+    width: 48px;
+    min-height: 48px;
+    padding: 9px;
+  }
+  .d-header-right {
+    flex-direction: column-reverse;
+    gap: 2px;
+  }
+  .d-preview-pill {
+    min-height: 48px;
+    padding: 6px 7px;
+    font-size: 11px;
+  }
+  .d-compact-progress {
+    font-size: 12px;
+  }
+  .d-world-regions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .d-world-scene {
+    padding: 16px 14px 8px;
+  }
+  .d-island-label,
+  .d-island-label.is-open {
+    height: 146px;
+    min-height: 146px;
+  }
+  .d-island-name {
+    padding: 9px 12px;
+  }
+  .d-island-name strong {
+    font-size: 22px;
+  }
+  .d-island-label .d-island-lock {
+    right: 12px;
+    top: 8px;
+  }
+  .d-realm-tabs {
+    padding: 12px 14px 16px;
+    gap: 10px;
+  }
+  .d-realm-tabs button {
+    flex: 0 1 auto;
+    flex-direction: row;
+    max-width: none;
+    min-width: 48px;
+    padding: 8px 10px;
+  }
+  .d-realm-tabs span {
+    font-size: 12px;
+  }
+  .d-map-scroll {
+    width: calc(100% - 20px);
+    max-width: none;
+    height: calc(100dvh - 176px);
+    margin: 0 auto;
+  }
+  .d-map-controls {
+    right: 24px;
+    bottom: 32px;
+  }
+  .d-world-bottom {
+    padding: 8px 16px 20px;
+    gap: 12px;
+  }
+  .d-world-bottom button {
+    min-width: 190px;
+  }
+  .d-lock-details {
+    padding: 44px 24px max(28px, env(safe-area-inset-bottom));
+  }
+}

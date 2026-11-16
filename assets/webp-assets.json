@@ -1,0 +1,116 @@
+{
+  "assets": [
+    {
+      "source": "assets/source/runtime/art/crystal-sanctuary.png",
+      "output": "art/crystal-sanctuary.webp",
+      "quality": 0.84
+    },
+    {
+      "source": "assets/source/runtime/art/cute-crystal-island.png",
+      "output": "art/cute-crystal-island.webp",
+      "quality": 0.84
+    },
+    {
+      "source": "assets/source/runtime/art/gemora-baby-dragon.png",
+      "output": "art/gemora-baby-dragon.webp",
+      "quality": 0.9,
+      "width": 640
+    },
+    {
+      "frames": [
+        "assets/source/companions/crystal-frames/00.png",
+        "assets/source/companions/crystal-frames/01.png",
+        "assets/source/companions/crystal-frames/02.png",
+        "assets/source/companions/crystal-frames/03.png",
+        "assets/source/companions/crystal-frames/04.png",
+        "assets/source/companions/crystal-frames/05.png",
+        "assets/source/companions/crystal-frames/06.png",
+        "assets/source/companions/crystal-frames/07.png",
+        "assets/source/companions/crystal-frames/08.png",
+        "assets/source/companions/crystal-frames/09.png",
+        "assets/source/companions/crystal-frames/10.png",
+        "assets/source/companions/crystal-frames/11.png",
+        "assets/source/companions/crystal-frames/12.png",
+        "assets/source/companions/crystal-frames/13.png",
+        "assets/source/companions/crystal-frames/14.png",
+        "assets/source/companions/crystal-frames/15.png"
+      ],
+      "columns": 4,
+      "width": 512,
+      "quality": 0.9,
+      "output": "art/companions/animated/crystal-v1-small.webp"
+    },
+    {
+      "frames": [
+        "assets/source/companions/leaf-frames/00.png",
+        "assets/source/companions/leaf-frames/01.png",
+        "assets/source/companions/leaf-frames/02.png",
+        "assets/source/companions/leaf-frames/03.png",
+        "assets/source/companions/leaf-frames/04.png",
+        "assets/source/companions/leaf-frames/05.png",
+        "assets/source/companions/leaf-frames/06.png",
+        "assets/source/companions/leaf-frames/07.png",
+        "assets/source/companions/leaf-frames/08.png",
+        "assets/source/companions/leaf-frames/09.png",
+        "assets/source/companions/leaf-frames/10.png",
+        "assets/source/companions/leaf-frames/11.png",
+        "assets/source/companions/leaf-frames/12.png",
+        "assets/source/companions/leaf-frames/13.png",
+        "assets/source/companions/leaf-frames/14.png",
+        "assets/source/companions/leaf-frames/15.png"
+      ],
+      "columns": 4,
+      "width": 512,
+      "quality": 0.9,
+      "output": "art/companions/animated/leaf-v1-small.webp"
+    },
+    {
+      "frames": [
+        "assets/source/companions/water-frames/00.png",
+        "assets/source/companions/water-frames/01.png",
+        "assets/source/companions/water-frames/02.png",
+        "assets/source/companions/water-frames/03.png",
+        "assets/source/companions/water-frames/04.png",
+        "assets/source/companions/water-frames/05.png",
+        "assets/source/companions/water-frames/06.png",
+        "assets/source/companions/water-frames/07.png",
+        "assets/source/companions/water-frames/08.png",
+        "assets/source/companions/water-frames/09.png",
+        "assets/source/companions/water-frames/10.png",
+        "assets/source/companions/water-frames/11.png",
+        "assets/source/companions/water-frames/12.png",
+        "assets/source/companions/water-frames/13.png",
+        "assets/source/companions/water-frames/14.png",
+        "assets/source/companions/water-frames/15.png"
+      ],
+      "columns": 4,
+      "width": 512,
+      "quality": 0.9,
+      "output": "art/companions/animated/water-v1-small.webp"
+    },
+    {
+      "frames": [
+        "assets/source/companions/fire-frames/00.png",
+        "assets/source/companions/fire-frames/01.png",
+        "assets/source/companions/fire-frames/02.png",
+        "assets/source/companions/fire-frames/03.png",
+        "assets/source/companions/fire-frames/04.png",
+        "assets/source/companions/fire-frames/05.png",
+        "assets/source/companions/fire-frames/06.png",
+        "assets/source/companions/fire-frames/07.png",
+        "assets/source/companions/fire-frames/08.png",
+        "assets/source/companions/fire-frames/09.png",
+        "assets/source/companions/fire-frames/10.png",
+        "assets/source/companions/fire-frames/11.png",
+        "assets/source/companions/fire-frames/12.png",
+        "assets/source/companions/fire-frames/13.png",
+        "assets/source/companions/fire-frames/14.png",
+        "assets/source/companions/fire-frames/15.png"
+      ],
+      "columns": 4,
+      "width": 512,
+      "quality": 0.9,
+      "output": "art/companions/animated/fire-v1-small.webp"
+    }
+  ]
+}

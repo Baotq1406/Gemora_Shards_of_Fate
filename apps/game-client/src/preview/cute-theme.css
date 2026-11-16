@@ -38,7 +38,7 @@
   background: #9edfe5;
 }
 .g-world::before {
-  background-image: url("/art/cute-crystal-island.png");
+  background-image: url("/art/cute-crystal-island.webp");
   background-position: center center;
 }
 .g-world::after,
@@ -742,7 +742,7 @@
   background: #6db755;
 }
 .g-pve::before {
-  background-image: url("/art/cute-crystal-island.png");
+  background-image: url("/art/cute-crystal-island.webp");
   background-size: auto 105%;
   background-position: 25% center;
   filter: none;

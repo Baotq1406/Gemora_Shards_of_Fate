@@ -35,15 +35,15 @@ test('new player preserves draft on focus, handles taken names, and persists ava
   await page.screenshot({ path: testInfo.outputPath('create-connected.png'), fullPage: true });
   await page.getByRole('button', { name: "Let's play" }).click();
   await expect(page).toHaveURL(/\/home$/);
-  await expect(page.getByText('Welcome, Moonleaf!', { exact: true })).toBeVisible();
+  await expect(page.locator('.h-profile')).toContainText('Moonleaf');
   await expect(page.locator('.g-currency, .g-level, .g-objective')).toHaveCount(0);
   await page.getByRole('button', { name: /Moonleaf/ }).click();
   await page.getByRole('button', { name: 'Change avatar', exact: true }).click();
   await page.getByRole('button', { name: 'Sun', exact: true }).click();
-  await expect(page.locator('.g-player-card .gold')).toBeVisible();
+  await expect(page.locator('.h-profile .gold')).toBeVisible();
   await page.reload();
-  await expect(page.locator('.g-player-card .gold')).toBeVisible();
-  await expect(page.getByText('Welcome back, Moonleaf!', { exact: true })).toBeVisible();
+  await expect(page.locator('.h-profile .gold')).toBeVisible();
+  await expect(page.locator('.h-profile')).toContainText('Moonleaf');
   await page.screenshot({ path: testInfo.outputPath('home-connected.png'), fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -55,6 +55,6 @@ test('lost onboarding response restores the committed player without another POS
   await page.getByLabel('Name', { exact: true }).fill('Starlight');
   await page.getByRole('button', { name: "Let's play" }).click();
   await expect(page).toHaveURL(/\/home$/);
-  await expect(page.locator('.g-player-card')).toContainText('Starlight');
+  await expect(page.locator('.h-profile')).toContainText('Starlight');
   expect(calls()).toBe(1);
 });

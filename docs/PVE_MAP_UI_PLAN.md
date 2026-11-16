@@ -1,6 +1,19 @@
 # Kế hoạch UI sảnh và bản đồ PvE
 
-Ngày: 09/11/2026. Trạng thái: đề xuất thiết kế; chưa triển khai UI hoặc gameplay.
+> **Đã được thay thế về thiết kế và phạm vi:** yêu cầu mới ngày 12/11/2026 là **5 vùng nguyên tố, mỗi vùng 10 thử thách**. Xem [kế hoạch sửa UI năm vùng](PVE_FIVE_REALMS_REDESIGN_PLAN.md). Tài liệu bên dưới ghi lại phương án và bản triển khai 8 màn cũ, không còn là mục tiêu thiết kế tiếp theo.
+
+Ngày lập: 09/11/2026. Cập nhật: 12/11/2026. Trạng thái: đã triển khai UI bản đồ và nối lối vào từ sảnh; chưa có gameplay/API PvE.
+
+## Tiến độ triển khai 12/11/2026
+
+- Đã có bản đồ Whispering Woods gồm 8 nút màn, đường nối, cây, suối, pha lê, elite và boss; có trạng thái hoàn thành, mở, khóa và đang chọn.
+- Chọn màn hiện thông tin, địch, thưởng và điều kiện mở. Desktop dùng bảng bên phải, mobile dùng bảng nổi từ dưới lên, hỗ trợ Escape/đóng và trả focus.
+- Nút Adventure ở sảnh mở `/campaign`; hỗ trợ tải lại đường dẫn khi đã đăng nhập và điều hướng Back/Forward. Trong phiên điều hướng, giữ màn đang chọn và vị trí cuộn.
+- Bản đồ hiện là UI preview cả khi mở từ sảnh thật: 3/8 màn hoàn thành, tên địch và thưởng là mẫu, ghi rõ trên giao diện; không lưu vào tài khoản. Chưa có API PvE nên nút Play/Replay bị vô hiệu hóa và đội hình là ô trống, không giả lập nhận thưởng.
+- Xem riêng khi chạy development: `http://localhost:8080/?preview=campaign`.
+- Mã màn hình: `apps/game-client/src/campaign/`. Kiểm tra tương tác: `apps/game-client/test/campaign.spec.mjs`. Ảnh: `docs/previews/campaign-desktop.png`, `campaign-mobile.png`, `campaign-mobile-details.png`.
+
+Các phần bên dưới giữ đặc tả đích. Luồng đổi đội, bắt đầu/tiếp tục trận, kết quả, cập nhật tiến trình thật và loading/error của API sẽ triển khai cùng gameplay.
 
 ## 1. Hướng thiết kế
 
